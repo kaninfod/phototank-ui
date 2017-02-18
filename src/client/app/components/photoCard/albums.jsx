@@ -8,7 +8,7 @@ export default class Albums extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.state = {
-      PhotoCard: this.props.PhotoCard
+      PhotoCard: this.props.cardData
     }
   }
 
@@ -23,7 +23,7 @@ export default class Albums extends React.Component {
   }
 
   render() {
-    var albums = this.props.photocard.albums.map(function(a) {
+    var albums = this.props.cardData.albums.map(function(a) {
       return album(a, this.handleChange)}.bind(this)
     )
     return (

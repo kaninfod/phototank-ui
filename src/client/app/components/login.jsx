@@ -42,8 +42,6 @@ export default class Login extends React.Component {
 
   _setState() {
     var _state = AuthStore.getState()
-    console.log('alwk');
-    console.log(_state);
     if (!_state.loggedIn) {
       return this.setState({ error: true })
     }

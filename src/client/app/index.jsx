@@ -9,6 +9,9 @@ import Root from './components/root.jsx'
 import Photos from './components/routes/Photos.jsx'
 import Login from './components/login.jsx'
 
+import { Provider } from "react-redux"
+import store from "./store"
+
 var requireAuth = function(nextState, replace ) {
   if (!AuthStore.isLoggedIn()) {
     replace({
@@ -16,7 +19,7 @@ var requireAuth = function(nextState, replace ) {
       state: { nextPathname: nextState.location.pathname }
     })
   } else {
-    console.log('lets go');
+    
   }
 }
 
@@ -25,10 +28,12 @@ var callback = function( ) {
 }
 
 ReactDOM.render((
-  <Router history={browserHistory}>
-    <Route path="/" component={Photos} onEnter={requireAuth}></Route>
-    <Route path="/login" component={Login}></Route>
-  </Router>
+  <Provider store={store}>
+    <Router history={browserHistory}>
+      <Route path="/" component={Photos} onEnter={requireAuth}></Route>
+      <Route path="/login" component={Login}></Route>
+    </Router>
+  </Provider>
 ),document.getElementById('app'));
 
 

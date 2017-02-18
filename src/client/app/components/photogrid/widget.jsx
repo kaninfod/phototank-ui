@@ -43,12 +43,12 @@ export default class Widget extends React.Component {
 
         <div
           id={this.props.photo.id} className="photo-widget z-depth-1" ref="widget"
-          onMouseEnter={this.handleHover} onMouseLeave={this.handleHover} onClick={this.handleClick}>
+          onMouseEnter={this.handleHover} onMouseLeave={this.handleHover}>
           <div className="photo-widget-content"></div>
             <div className="photo-widget-header">
 
               <img
-                className="lazy" id={this.props.photo.id}
+                className="lazy" id={this.props.photo.id} onClick={this.handleClick}
                 data-original={this.props.photo.url.concat('?token=',localStorage.Authorization)}/>
 
 

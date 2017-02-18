@@ -25,7 +25,7 @@ export default class Bucket extends React.Component {
 
     if (this.state.photoId) {
       AppActions.loadPhoto({
-        
+
       });
     }
   }
@@ -48,7 +48,7 @@ export default class Bucket extends React.Component {
   }
 
   render() {
-
+    if ( this.state.hidden) {return <FloatingButton onHide={this.hide}/>}
 
     return (
       <Draggable handle=".header">
@@ -63,4 +63,14 @@ export default class Bucket extends React.Component {
      </Draggable>
     )
   }
+}
+
+const FloatingButton = (props) => {
+  return (
+    <a onClick={props.onHide} className="fixed-action-button btn-floating waves-effect waves-light">
+      <i className="material-icons">
+        info
+      </i>
+    </a>
+  )
 }

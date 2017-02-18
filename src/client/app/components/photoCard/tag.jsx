@@ -15,7 +15,7 @@ export default class Tag extends React.Component {
         <Header handleClose={this.props.widgetHandlers.HIDE} title="Add tag to photo"/>
         <div className="pt-widget content">
           <div className="pt-tags">
-            <PhotoTagger photoId={this.props.photocard.photo.id} tags={this.props.photocard.photo.tags}/>
+            <PhotoTagger photoId={this.props.cardData.photo.id} tags={this.props.cardData.photo.tags}/>
           </div>
         </div>
       </div>

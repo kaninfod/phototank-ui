@@ -23,7 +23,15 @@ var config = {
   },
   module : {
     loaders : [
-      { test : /\.jsx?/, include : APP_DIR, loader : 'babel-loader' },
+      {
+        test : /\.jsx?/,
+        include : APP_DIR,
+        loader : 'babel-loader',
+        query: {
+          presets: ['react', 'es2015', 'stage-0'],
+          plugins: ['react-html-attrs', 'transform-class-properties', 'transform-decorators-legacy'],
+        }
+      },
       { test: /.(woff|woff2|eot|ttf)$/, loader:"url-loader?prefix=font/&limit=5000" },
       {test: /\.(scss|css)$/, loader: ExtractTextPlugin.extract('css-loader!sass-loader')}
     ]
