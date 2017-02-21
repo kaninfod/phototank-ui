@@ -12,7 +12,7 @@ var _state = {
 var AuthStore = assign({}, EventEmitter.prototype, {
 
   isLoggedIn: function() {
-    return !!localStorage.Authorization
+    return !!localStorage.authKey
   },
 
   getState: function() {
@@ -66,7 +66,7 @@ var login = function(payload) {
     console.log('setting from api');
     _state.Authorization = data.auth_token
     _state.loggedIn = true
-    localStorage.Authorization = data.auth_token
+    localStorage.authKey = data.auth_token
 
   })
   .always(function(data) {

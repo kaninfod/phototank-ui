@@ -11,8 +11,8 @@ export default class Photos extends React.Component {
   render() {
     return (
       <div>
-        <Grid selectedPhoto="642"/>
-        <PhotoCard photoId="565"/>
+        <Grid/>
+        <PhotoCard/>
         <Bucket/>
       </div>
     )

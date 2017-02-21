@@ -10,7 +10,7 @@ export default class Map extends React.Component {
 
   render() {
 
-    const mapurl = this.props.photocard.photo.location.map_url.concat('?token=', localStorage.Authorization)
+    const mapurl = this.props.cardData.photo.location.map_url.concat('?token=', localStorage.authKey)
     return (
       <div className="pt-widget">
         <Header handleClose={this.props.widgetHandlers.HIDE} title="Photo location information"/>

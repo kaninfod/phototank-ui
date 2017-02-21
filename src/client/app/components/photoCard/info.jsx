@@ -2,13 +2,14 @@ import React from 'react';
 import {Header} from './header.jsx'
 
 var infoItemProps = function(props){
+
   return (
-    [{key: 1, label: 'ID',      info: props.photo.id},
-    {key: 2, label: 'Date',     info: props.photo.date_taken},
-    {key: 3, label: 'Address',  info: props.photo.location.address},
-    {key: 4, label: 'Country',  info: props.photo.location.country},
-    {key: 5, label: 'Model',    info: props.photo.model},
-    {key: 6, label: 'Make',     info: props.photo.make}]
+    [{key: 1, label: 'ID',      info: props.id},
+    {key: 2, label: 'Date',     info: props.date_taken},
+    {key: 3, label: 'Address',  info: props.location.address},
+    {key: 4, label: 'Country',  info: props.location.country},
+    {key: 5, label: 'Model',    info: props.model},
+    {key: 6, label: 'Make',     info: props.make}]
   )
 }
 
@@ -29,7 +30,7 @@ export default class Info extends React.Component {
   }
 
   render() {
-    const info = infoItemProps(this.props.photocard)
+    const info = infoItemProps(this.props.cardData.photo)
     return (
       <div className="pt-widget">
         <Header handleClose={this.props.widgetHandlers.HIDE} title="Photo Information"/>

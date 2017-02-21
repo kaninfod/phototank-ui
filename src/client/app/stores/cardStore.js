@@ -59,7 +59,7 @@ AppDispatcher.register(function(payload){
 });
 
 var headers = new Headers({
-  'Authorization': localStorage.Authorization
+  'Authorization': localStorage.authKey
 })
 
 var loadPhoto = function(photoId) {
@@ -69,7 +69,7 @@ var loadPhoto = function(photoId) {
   fetch(request)
   .then(function(response) {return response.json()})
   .then(function(json){
-    console.log(json);
+    
     _card.data = json
     _card.hidden = false
     CardStore.emitChange()

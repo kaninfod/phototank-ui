@@ -1,62 +1,51 @@
-import React from 'react';
-import TaggerStore from '../../stores/taggerStore.js'
-import AppActions from '../../actions/actions.js'
+import React from 'react'
+import { connect } from "react-redux"
+// import TaggerStore from '../../stores/taggerStore'
+// import AppActions from '../../actions/actions'
 import '../../stylesheets/tagger.css'
+import { loadTags, tagInput, selectSuggestion, addTag, removeTag } from '../../actions/taggerActions'
 
+
+@connect((store) => {
+  return {
+    tags: store.tagger.get('tags'),
+    suggestions: store.tagger.get('suggestions'),
+    inputValue: store.tagger.get('inputValue'),
+    selectedSuggestion: store.tagger.get('selectedSuggestion'),
+    selectedPhoto: store.grid.get('selectedPhoto'),
+  };
+})
 export default class PhotoTagger extends React.Component {
   constructor(props) {
     super(props);
     this.clickTag = this.clickTag.bind(this);
+    this.tagInput = this.tagInput.bind(this);
     this.handleKeyDown = this.handleKeyDown.bind(this);
-    this._setState = this._setState.bind(this);
-    this.state = {
-      photoId: this.props.photoId,
-      tags: [],
-      inputValue: '',
-      suggestions: [],
-      selectedSuggestion: null
-    }
   }
 
   componentWillMount() {
-    console.log('mounting');
-    TaggerStore.addChangeListener(this._setState)
-
-    if (!this.state.tags.length) {
-      AppActions.selectPhoto({
-        photoId: this.state.photoId
-      });
+    if (!this.props.tags.length) {
+      this.props.dispatch(loadTags(this.props.photoId))
     }
   }
-  componentWillUnmount() {
-    TaggerStore.removeChangeListener(this._setState)
+
+  componentWillReceiveProps(nextProps){
+    if (this.props.photoId != nextProps.photoId) {
+      this.props.dispatch(loadTags(nextProps.photoId))
+    }
   }
-
-  _setState() {
-    var data = TaggerStore.getTagger()
-    this.setState({
-      photoId: data.photoId,
-      tags: data.tags,
-      inputValue: data.inputValue,
-      suggestions: data.suggestions,
-      selectedSuggestion: data.selectedSuggestion
-    })
-  }
-
-
 
   clickTag(e) {
-    console.log(this.state);
-    AppActions.removeTag({
-      photoId: this.state.photoId,
-      name: e.target.dataset.name
-    });
+    this.props.dispatch(
+      removeTag({
+        photoId: this.props.photoId,
+        name: e.target.dataset.name
+      }
+    ))
   }
 
   tagInput(e) {
-    AppActions.tagInput({
-      inputValue: e.target.value
-    });
+    this.props.dispatch(tagInput(e.target.value))
   }
 
   handleKeyDown(e) {
@@ -112,29 +101,29 @@ export default class PhotoTagger extends React.Component {
     var _new_item =function() { if (input.length ) return _add_tag(input) }
 
     var _add_tag = function(name) {
-      AppActions.addTag({ name: name, photoId: this.state.photoId})
+      this.props.dispatch(addTag({ name: name, photoId: this.props.photoId}))
+      // AppActions.addTag({ name: name, photoId: this.state.photoId})
     }.bind(this)
 
     var key = e.which
-    var input = this.state.inputValue
-    var suggestions = this.state.suggestions
-    var current = this.state.selectedSuggestion
+    var input = this.props.inputValue
+    var suggestions = this.props.suggestions
+    var current = this.props.selectedSuggestion
     var k = _items()
 
-    AppActions.selectSuggestion({ selectedSuggestion: k})
-
+    this.props.dispatch(selectSuggestion({ selectedSuggestion: k}))
   }
 
   render() {
-    const tags = this.state.tags
-    const suggestions = this.state.suggestions
+    const tags = this.props.tags
+    const suggestions = this.props.suggestions
     return (
       <div className="tagger">
         <input className="tag-input" onKeyDown={this.handleKeyDown}
-          value={this.state.inputValue} onChange={this.tagInput}/>
+          value={this.props.inputValue} onChange={this.tagInput}/>
 
         <SuggestionsPane suggestions={suggestions}
-          selected={this.state.selectedSuggestion}/>
+          selected={this.props.selectedSuggestion}/>
 
       <div className="added-tags">
           {tags.map(tag.bind(this))}
