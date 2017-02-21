@@ -50,7 +50,7 @@ var getPhotos = function(url) {
 
   $.ajax({
       url: url,
-      headers: {Authorization: localStorage.Authorization}
+      headers: {Authorization: localStorage.authKey}
   })
   .done(function(data) {
     var _photos = _grid.photos.concat(data.photos)

@@ -1,7 +1,7 @@
 import AppConstants from '../constants/constants'
 
 var headers = new Headers({
-  'Authorization': localStorage.Authorization
+  'Authorization': localStorage.authKey
 })
 
 

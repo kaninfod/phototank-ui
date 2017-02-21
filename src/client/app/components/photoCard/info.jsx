@@ -30,7 +30,6 @@ export default class Info extends React.Component {
   }
 
   render() {
-    console.log('props', this.props);
     const info = infoItemProps(this.props.cardData.photo)
     return (
       <div className="pt-widget">

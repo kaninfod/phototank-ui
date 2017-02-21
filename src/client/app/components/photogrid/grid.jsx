@@ -8,13 +8,11 @@ import {loadPhotos, clickPhoto, deletePhoto, selectPhoto} from '../../actions/gr
 
 @connect((store) => {
   return {
-    delete: store.grid.delete,
-    photos: store.grid.photos,
-    nextPage: store.grid.nextPage,
-    bucket: store.grid.bucket,
-    loading: store.grid.loading,
-    selectedPhoto: store.grid.selectedPhoto,
-    bucket: store.grid.bucket,
+    photos:store.grid.get('photos').toJS(),
+    nextPage: store.grid.get('nextPage'),
+    bucket: store.grid.get('bucket').toJS(),
+    loading: store.grid.get('loading'),
+    selectedPhoto: store.grid.get('selectedPhoto'),
   };
 })
 export default class Grid extends React.Component {
@@ -25,15 +23,6 @@ export default class Grid extends React.Component {
     this.handleSelect = this.handleSelect.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
     this.loading = true
-    // this.state = {
-    //   photos: [],
-    //   selectedPhoto: this.props.selectedPhoto,
-    //   bucket: [],
-    //   nextPage: "/api/photos.json?page=1",
-    //   offset: 800,
-    //   loading: true,
-    //   //showCard: @props.showCard
-    // }
   }
 
   componentWillMount() {
@@ -67,7 +56,6 @@ export default class Grid extends React.Component {
   }
 
   render() {
-
     return (
       <div className="photos-component">
         <div className="row photogrid" onScroll={this.handleScroll}>

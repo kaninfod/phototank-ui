@@ -10,6 +10,7 @@ export default class Tag extends React.Component {
   }
 
   render() {
+    console.log('photoId: ', this.props.cardData.photo.id);
     return (
       <div className="pt-widget">
         <Header handleClose={this.props.widgetHandlers.HIDE} title="Add tag to photo"/>

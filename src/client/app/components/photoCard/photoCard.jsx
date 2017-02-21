@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from "react-redux"
-import CardStore from '../../stores/cardStore.js'
-import AppActions from '../../actions/actions.js'
+// import CardStore from '../../stores/cardStore.js'
+// import AppActions from '../../actions/actions.js'
 import AppConstants from '../../constants/constants.js'
 import Draggable, {DraggableCore} from 'react-draggable';
 import Buttons from './buttons'
@@ -28,14 +28,10 @@ const components = {
 
 @connect((store) => {
   return {
-    selectedWidget: store.photoCard.widget,
-    hidden: store.photoCard.hidden,
-    photoId: store.photoCard.photoId,
-    photo: store.photoCard.photo,
-    grid: store.grid.selectedPhoto,
-    cardData: store.photoCard.cardData,
-    comments: store.photoCard.comments,
-    like: store.photoCard.like,
+    selectedWidget: store.photoCard.get('selectedWidget'),
+    hidden: store.photoCard.get('hidden'),
+    photoId: store.photoCard.get('photoId'),
+    cardData: store.photoCard.get('cardData').toJS(),
   };
 })
 export default class PhotoCard extends React.Component {
@@ -46,30 +42,14 @@ export default class PhotoCard extends React.Component {
     this.hide = this.hide.bind(this);
     this.addToAlbum  = this.addToAlbum.bind(this);
     this.addComment  = this.addComment.bind(this);
-    this.state = {
-      selectedWidget:'TAG',
-      photoId: this.props.photoId,
-      hidden: true
-    }
   }
 
   componentWillMount() {
-    // CardStore.addListener('change', function(){
-    //   var data = CardStore.getCard()
-    //   this.setState({
-    //     selectedWidget: data.widget,
-    //     photocard: data.data,
-    //     hidden: data.hidden
-    //   })
-    // }.bind(this));
-
     if (this.props.photoId) {
       this.props.dispatch(loadPhoto(this.props.photoId))
-      // AppActions.loadPhoto({
-      //   photoId: this.state.photoId
-      // });
     }
   }
+
   componentWillReceiveProps(nextProps){
     if (this.props.photoId != nextProps.photoId) {
       this.props.dispatch(loadPhoto(nextProps.photoId))
@@ -79,19 +59,13 @@ export default class PhotoCard extends React.Component {
   handleWidget(e) {
     var action = e.target.dataset.widget
     if (action == 'DELETE') {
-      AppActions.deleteCardPhoto({
-        photoId: this.state.photocard.photo.id
-      });
-    } else if (action == 'LIKE') {
-      this.props.dispatch(likePhoto(this.props.cardData.photo.id))
-      // AppActions.likePhoto({
+      // AppActions.deleteCardPhoto({
       //   photoId: this.state.photocard.photo.id
       // });
+    } else if (action == 'LIKE') {
+      this.props.dispatch(likePhoto(this.props.cardData.photo.id))
     } else {
       this.props.dispatch(setWidget(action))
-      // AppActions.setCardWidget({
-      //   widget: action
-      // });
     }
   }
 
@@ -101,10 +75,6 @@ export default class PhotoCard extends React.Component {
       albumId: albumId
     }
     this.props.dispatch(addToAlbum(payload))
-    // AppActions.addToAlbum({
-    //   photoId: this.state.photocard.photo.id,
-    //   albumId: albumId
-    // });
   }
 
   rotatePhoto(rotation) {
@@ -113,10 +83,6 @@ export default class PhotoCard extends React.Component {
       rotation: rotation
     }
     this.props.dispatch(rotatePhoto(payload))
-    // AppActions.rotatePhoto({
-    //   photoId: this.state.photocard.photo.id,
-    //   rotation: rotation
-    // });
   }
 
   addComment(comment) {
@@ -124,25 +90,19 @@ export default class PhotoCard extends React.Component {
       photoId: this.props.cardData.photo.id,
       comment: comment
     }
-    console.log(payload);
     this.props.dispatch(addComment(payload))
-
-    // AppActions.addComment({
-    //   photoId: this.state.photocard.photo.id,
-    //   comment: comment
-    // });
   }
 
   hide() {
-    this.setState({ hidden: !this.state.hidden })
+    this.setState({ hidden: !this.props.hidden })
   }
 
   likeState() {
-    if (this.props.photo.like) { return "green" } else {return "blue-grey lighten-2"}
+    if (this.props.cardData.photo.like) { return "green" } else {return "blue-grey lighten-2"}
   }
 
   render() {
-    if (!this.props.cardData || this.props.hidden) {return <FloatingButton onHide={this.hide}/>}
+    if (!Object.keys(this.props.cardData).length === 0 || this.props.hidden) {return <FloatingButton onHide={this.hide}/>}
     const buttons = getButtons({likeState: this.likeState()})
     if (!['INFO', 'MAP'].includes(this.props.selectedWidget)) {
       buttons.vert = []
