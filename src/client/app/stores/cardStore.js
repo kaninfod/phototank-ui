@@ -59,7 +59,7 @@ AppDispatcher.register(function(payload){
 });
 
 var headers = new Headers({
-  'Authorization': localStorage.Authorization
+  'Authorization': localStorage.authKey
 })
 
 var loadPhoto = function(photoId) {

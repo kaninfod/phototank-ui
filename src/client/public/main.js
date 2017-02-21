@@ -13739,7 +13739,7 @@ var _state = {
 var AuthStore = assign({}, EventEmitter.prototype, {
 
   isLoggedIn: function isLoggedIn() {
-    return !!localStorage.Authorization;
+    return !!localStorage.authKey;
   },
 
   getState: function getState() {
@@ -13789,7 +13789,7 @@ var login = function login(payload) {
     console.log('setting from api');
     _state.Authorization = data.auth_token;
     _state.loggedIn = true;
-    localStorage.Authorization = data.auth_token;
+    localStorage.authKey = data.auth_token;
   }).always(function (data) {
     AuthStore.emitChange();
   });
@@ -37700,7 +37700,7 @@ var Comment = function (_React$Component) {
     value: function render() {
       var comments = this.props.photocard.photo.comments;
       console.log(this.props.photocard);
-      var avatar = this.props.photocard.current_user.avatar.concat('?token=', localStorage.Authorization);
+      var avatar = this.props.photocard.current_user.avatar.concat('?token=', localStorage.authKey);
       return _react2.default.createElement(
         'div',
         { className: 'pt-widget' },
@@ -37740,7 +37740,7 @@ exports.default = Comment;
 
 
 var comment = function comment(_comment) {
-  var avatar = _comment.user_avatar.concat('?token=', localStorage.Authorization);
+  var avatar = _comment.user_avatar.concat('?token=', localStorage.authKey);
   return _react2.default.createElement(
     'div',
     { className: 'comment', key: _comment.id },
@@ -37897,7 +37897,7 @@ var Map = function (_React$Component) {
     key: 'render',
     value: function render() {
 
-      var mapurl = this.props.photocard.photo.location.map_url.concat('?token=', localStorage.Authorization);
+      var mapurl = this.props.photocard.photo.location.map_url.concat('?token=', localStorage.authKey);
       return _react2.default.createElement(
         'div',
         { className: 'pt-widget' },
@@ -38577,7 +38577,7 @@ var Widget = function (_React$Component) {
           { className: 'photo-widget-header' },
           _react2.default.createElement('img', {
             className: 'lazy', id: this.props.photo.id,
-            'data-original': this.props.photo.url.concat('?token=', localStorage.Authorization) }),
+            'data-original': this.props.photo.url.concat('?token=', localStorage.authKey) }),
           _react2.default.createElement(
             'div',
             { className: "overlay-button overlay-select " + (this.props.photo.bucket ? "selected" : ""),
@@ -39011,7 +39011,7 @@ AppDispatcher.register(function (payload) {
 });
 
 var headers = new Headers({
-  'Authorization': localStorage.Authorization
+  'Authorization': localStorage.authKey
 });
 
 var loadPhoto = function loadPhoto(photoId) {
@@ -39147,7 +39147,7 @@ var getPhotos = function getPhotos(url) {
 
   $.ajax({
     url: url,
-    headers: { Authorization: localStorage.Authorization }
+    headers: { Authorization: localStorage.authKey }
   }).done(function (data) {
     var _photos = _grid.photos.concat(data.photos);
     data.photos = _photos;
