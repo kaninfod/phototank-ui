@@ -1,8 +1,6 @@
 
 import '../../stylesheets/photo-card/card.scss'
 import React from 'react';
-import BucketStore from '../../stores/bucketStore.js'
-import AppActions from '../../actions/actions.js'
 import AppConstants from '../../constants/constants.js'
 import Draggable, {DraggableCore} from 'react-draggable';
 import {Header} from './../photoCard/header.jsx'

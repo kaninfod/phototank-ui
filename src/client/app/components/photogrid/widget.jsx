@@ -1,6 +1,5 @@
 import React from 'react';
-import '../../stylesheets/grid.css'
-
+import '../../stylesheets/grid.css';
 
 export default class Widget extends React.Component {
   constructor(props) {
@@ -11,31 +10,31 @@ export default class Widget extends React.Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.handleZoom = this.handleZoom.bind(this);
     this.state = {
-    }
+    };
   }
 
   handleHover(e) {
-    var overlayButton = $(this.refs.widget).find(".overlay-button:not(.overlay-processing)")
+    var overlayButton = $(this.refs.widget).find(".overlay-button:not(.overlay-processing)");
     if (e.type == 'mouseenter')
-      overlayButton.addClass('overlay-show')
+      overlayButton.addClass('overlay-show');
     else
-      overlayButton.removeClass('overlay-show')
+      overlayButton.removeClass('overlay-show');
   }
 
   handleSelect(e) {
-    this.props.handleSelect(this.props.photo.id)
+    this.props.handleSelect(this.props.photo.id);
   }
 
   handleZoom(e) {
-    console.log(this.refs)
+    console.log(this.refs);
   }
 
   handleDelete(e) {
-    this.props.handleDelete(this.props.photo.id)
+    this.props.handleDelete(this.props.photo.id);
   }
 
   handleClick(e) {
-    this.props.handleClick(this.props.photo.id)
+    this.props.handleClick(this.props.photo.id);
   }
 
   render() {
@@ -49,10 +48,10 @@ export default class Widget extends React.Component {
 
               <img
                 className="lazy" id={this.props.photo.id} onClick={this.handleClick}
-                data-original={this.props.photo.url.concat('?token=',localStorage.authKey)}/>
+                data-original={this.props.photo.url.concat('?token=', localStorage.authKey)}/>
 
-
-              <div className={"overlay-button overlay-select " + (this.props.photo.bucket ? "selected": "")}
+              <div className={'overlay-button overlay-select ' +
+                (this.props.photo.bucket ? 'selected' : '')}
                 onClick={this.handleSelect} ref="select" >
                     <i className="material-icons">check</i>
               </div>
