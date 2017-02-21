@@ -1,7 +1,5 @@
 import React from 'react'
 import { connect } from "react-redux"
-import AuthStore from '../stores/authStore.js'
-import AppActions from '../actions/actions.js'
 import { Router } from 'react-router';
 import { browserHistory } from 'react-router';
 import { login, logout } from '../actions/authActions'
@@ -50,7 +48,7 @@ export default class Login extends React.Component {
   emailChanged() {  }
 
   passwordChanged() {  }
-  
+
   _setState() {
     var _state = AuthStore.getState()
     if (!_state.loggedIn) {

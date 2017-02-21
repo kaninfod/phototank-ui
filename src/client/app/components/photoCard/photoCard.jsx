@@ -1,7 +1,5 @@
 import React from 'react';
 import { connect } from "react-redux"
-// import CardStore from '../../stores/cardStore.js'
-// import AppActions from '../../actions/actions.js'
 import AppConstants from '../../constants/constants.js'
 import Draggable, {DraggableCore} from 'react-draggable';
 import Buttons from './buttons'

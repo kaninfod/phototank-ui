@@ -1,7 +1,5 @@
 import React from 'react'
 import { connect } from "react-redux"
-// import TaggerStore from '../../stores/taggerStore'
-// import AppActions from '../../actions/actions'
 import '../../stylesheets/tagger.css'
 import { loadTags, tagInput, selectSuggestion, addTag, removeTag } from '../../actions/taggerActions'
 
