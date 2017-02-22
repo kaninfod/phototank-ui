@@ -1,9 +1,9 @@
-import React from 'react'
-import { connect } from "react-redux"
+import React from 'react';
+import { connect } from "react-redux";
 import { Router } from 'react-router';
 import { browserHistory } from 'react-router';
 import { login, logout } from '../actions/authActions'
-
+import '../stylesheets/login'
 
 @connect((store) => {
   return {
@@ -38,7 +38,6 @@ export default class Login extends React.Component {
   }
 
   handleLogin() {
-    console.log('ollsl');
     this.props.dispatch(login({
       email: this.state.email,
       password: this.state.password
@@ -67,7 +66,7 @@ export default class Login extends React.Component {
   render() {
     return (
 
-      <div class="row ">
+      <div class="row login-card">
         <div class="col s12 m6 ">
           <div class="card ">
 
@@ -86,7 +85,7 @@ export default class Login extends React.Component {
               </div>
             </div>
             <div class="row">
-              <button class="btn waves-effect waves-light" type="submit" onClick={this.handleLogin}>Submit
+              <button class="btn waves-effect waves-light" type="submit" onClick={this.handleLogin}>Login
                <i class="material-icons right">send</i>
              </button>
             </div>

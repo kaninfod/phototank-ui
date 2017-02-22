@@ -17,8 +17,12 @@ export default function reducer(state = initialState, action) {
       }
       case 'TAG_INPUT_FULFILLED': {
         var newState = state
-          .set('suggestions', action.payload.suggestions)
-          .set('inputValue', action.payload.tagInput)
+          .set('suggestions', action.payload)
+        return newState
+      }
+      case 'TAG_INPUT_VALUE': {
+        var newState = state
+          .set('inputValue', action.payload)
         return newState
       }
       case 'SELECT_SUGGESTION_SET': {

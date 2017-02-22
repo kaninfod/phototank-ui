@@ -1,8 +1,8 @@
 
 import React from 'react';
 import Grid from '../photogrid/grid.jsx'
-import PhotoCard from '../photoCard/photoCard.jsx'
-import Bucket from '../bucket/bucket.jsx'
+import PhotoCard from '../card/photo'
+import Bucket from '../card/bucket'
 
 
 

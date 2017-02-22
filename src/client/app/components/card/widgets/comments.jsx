@@ -1,25 +1,25 @@
 import React from 'react';
-import {Header} from './header.jsx'
+import { Header } from './header';
 
 export default class Comment extends React.Component {
   constructor(props) {
     super(props);
     this.handleKeyDown = this.handleKeyDown.bind(this);
     this.state = {
-    }
+    };
   }
 
   handleKeyDown(e) {
     if (e.which == 13 && e.target.value.length > 0) {
 
-      this.props.widgetHandlers.COMMENTS(e.target.value)
-      e.target.value = ''
+      this.props.widgetHandlers.COMMENTS(e.target.value);
+      e.target.value = '';
     }
   }
 
   render() {
-    const comments = this.props.cardData.photo.comments
-    const avatar = this.props.cardData.current_user.avatar.concat('?token=', localStorage.authKey)
+    const comments = this.props.data.photo.comments;
+    const avatar = this.props.data.current_user.avatar.concat('?token=', localStorage.authKey);
     return (
       <div className="pt-widget">
         <Header handleClose={this.props.widgetHandlers.HIDE} title="Add comments to Photo"/>
@@ -40,12 +40,12 @@ export default class Comment extends React.Component {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }
 
-var comment = function(comment){
-  const avatar = comment.user_avatar.concat('?token=', localStorage.authKey)
+var comment = function (comment) {
+  const avatar = comment.user_avatar.concat('?token=', localStorage.authKey);
   return (
     <div className="comment" key={comment.id}>
       <div className="comment-container">
@@ -56,5 +56,5 @@ var comment = function(comment){
         <img className="circle responsive-img" src={avatar}/>
       </div>
     </div>
-  )
-}
+  );
+};

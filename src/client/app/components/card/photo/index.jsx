@@ -1,17 +1,11 @@
 import React from 'react';
 import { connect } from "react-redux"
-import AppConstants from '../../constants/constants.js'
+import AppConstants from '../../../constants/constants.js'
 import Draggable, {DraggableCore} from 'react-draggable';
-import Buttons from './buttons'
 import {getButtons} from './button.props.js'
-import Info from './info.jsx'
-import Rotate from './rotate.jsx'
-import Albums from './albums.jsx'
-import Comments from './comments.jsx'
-import Tag from './tag.jsx'
-import Map from './map.jsx'
-import '../../stylesheets/photo-card/card.scss'
-import { loadPhoto, setWidget, addToAlbum, rotatePhoto, addComment, likePhoto } from '../../actions/photoCardActions'
+import { Buttons, Info, Rotate, Albums, Comments, Tag, Map } from '../widgets'
+import '../../../stylesheets/photo-card/card.scss'
+import { loadPhoto, setWidget, addToAlbum, rotatePhoto, addComment, likePhoto } from '../../../actions/photoCardActions'
 
 const components = {
   INFO:     Info,
@@ -100,12 +94,15 @@ export default class PhotoCard extends React.Component {
   }
 
   render() {
-    if (!Object.keys(this.props.cardData).length === 0 || this.props.hidden) {return <FloatingButton onHide={this.hide}/>}
-    const buttons = getButtons({likeState: this.likeState()})
-    if (!['INFO', 'MAP'].includes(this.props.selectedWidget)) {
-      buttons.vert = []
+
+
+    if (!Object.keys(this.props.cardData).length === 0 || this.props.hidden) {
+      return <FloatingButton onHide={this.hide}/>
     }
 
+    const props = this.props
+    const buttons = getButtons({likeState: this.likeState()})
+    const WidgetType = components[props.selectedWidget];
     const widgetHandlers = {
       ROTATE:   this.rotatePhoto,
       ALBUMS:   this.addToAlbum,
@@ -113,14 +110,16 @@ export default class PhotoCard extends React.Component {
       HIDE:     this.hide
     }
 
-    const WidgetType = components[this.props.selectedWidget];
+    if (!['INFO', 'MAP'].includes(props.selectedWidget)) {
+      buttons.vert = []
+    }
 
     return (
       <Draggable handle=".header">
         <div className="card pt-card upper-right show">
-          <WidgetType cardData={this.props.cardData} widgetHandlers={widgetHandlers}/>
+          <WidgetType data={props.cardData} widgetHandlers={widgetHandlers}/>
           <Buttons buttons={buttons}
-            widget={this.props.selectedWidget}
+            widget={props.selectedWidget}
             handleWidget={this.handleWidget}/>
         </div>
      </Draggable>

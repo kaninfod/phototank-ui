@@ -5,5 +5,5 @@ export const Header = (props) => {
       {props.title}
       <i className="right material-icons" onClick={props.handleClose} >close</i>
     </div>
-  )
-}
+  );
+};

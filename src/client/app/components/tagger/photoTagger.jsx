@@ -100,7 +100,6 @@ export default class PhotoTagger extends React.Component {
 
     var _add_tag = function(name) {
       this.props.dispatch(addTag({ name: name, photoId: this.props.photoId}))
-      // AppActions.addTag({ name: name, photoId: this.state.photoId})
     }.bind(this)
 
     var key = e.which
