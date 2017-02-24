@@ -22,7 +22,6 @@ export default class Albums extends React.Component {
   }
 
   render() {
-    console.log(this.props.data);
     var albums = this.props.data.albums.map((a) => {
       return album(a, this.handleChange);
     });

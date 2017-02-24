@@ -9,7 +9,6 @@ import '../stylesheets/login'
   return {
     isLoggedIn: store.auth.get('isLoggedIn'),
     username: store.auth.get('username'),
-
   };
 })
 export default class Login extends React.Component {
@@ -23,7 +22,7 @@ export default class Login extends React.Component {
       password: "123123123"
     }
   }
-
+//TODO this will have to go
   componentWillMount() {
     const { location } = this.props
     if (location.state && location.state.nextPathname) {

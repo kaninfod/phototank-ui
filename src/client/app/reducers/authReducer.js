@@ -3,30 +3,33 @@ import { List, Map, fromJS } from 'immutable';
 
 
 var init = {
-  isLoggedIn: !!localStorage.authKey
+  authorized: false
 }
 const initialState = Map(fromJS(init))
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case 'LOGIN_FULFILLED': {
-      localStorage.authKey = action.payload.auth_token
+      localStorage.authKey = action.payload.auth_token;
       return state
         .set('isLoggedIn', true)
-        .set('authKey', action.payload.auth_token)
+        .set('authKey', action.payload.auth_token);
     }
+
     case 'LOGOUT': {
-      window.localStorage.removeItem('authKey')
+      window.localStorage.removeItem('authKey');
       return state
         .set('isLoggedIn', action.payload.isLoggedIn)
-        .set('authKey', null)
+        .set('authKey', null);
     }
-    case 'IS_LOGGED_IN': {
-      console.log(action);
-      return state
-        .set('isLoggedIn', action.payload.isLoggedIn)
-        .set('authKey', action.payload.authKey)
+
+    case 'VALIDATE_TOKEN_FULFILLED': {
+      return state.set('token', action.payload.token)
+        .set('authorized', action.payload.authorized)
+        .set('userName', action.payload.user_name)
+        .set('email', action.payload.email)
+        .set('avatar', action.payload.avatar);
     }
   }
-  return state
+  return state;
 }

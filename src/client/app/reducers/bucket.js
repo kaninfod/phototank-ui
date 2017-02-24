@@ -6,6 +6,9 @@ var init = {
   data: {
     bucket: [],
     albums: [],
+    photo: {
+      comments: []
+    }
   },
 };
 
@@ -14,11 +17,15 @@ const initialState = Map(fromJS(init));
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case 'LOAD_BUCKET_FULFILLED': {
-      return state.setIn(['data', 'bucket'], action.payload.buckets);
+      return state.setIn(['data', 'bucket'], (action.payload.buckets));
+    }
+
+    case 'SELECT_PHOTO_FULFILLED': {
+      return state.setIn(['data', 'bucket'], (action.payload.bucket));
     }
 
     case 'LOAD_ALBUMS_FULFILLED': {
-      return state.setIn(['data', 'albums'], action.payload.albums);
+      return state.setIn(['data', 'albums'], fromJS(action.payload.albums));
     }
 
     case 'SET_WIDGET': {

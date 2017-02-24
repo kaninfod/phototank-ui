@@ -1,53 +1,29 @@
 import AppConstants from '../constants/constants'
+import { authenticate, authValidateToken } from './api-calls';
 
-var headers = new Headers({
-  'Authorization': localStorage.authKey
-})
 
+
+
+//TODO login via api, on success store token to session and then dispatch to reducer to set success
+
+export function loginSuccess() {
+  return {type: 'LOG_IN_SUCCESS'}
+}
 
 export function login(payload) {
-  var url = "/api/authenticate"
-  return function(dispatch) {
-    headers.append("Content-Type", "application/json")
-    var request = new Request(url, {
-      headers: headers,
-      method: 'POST',
-      body: JSON.stringify(payload)
-    });
-    fetch(request)
-      .then((response) => {
-        dispatch({type: "LOGIN", payload: response.json()})
-      })
-      .catch((err) => {
-        dispatch({type: "LOGIN", payload: err})
-      })
-  }
+  return authenticate(payload);
 }
 
 export function logout(payload) {
   return {
-    type: 'LOGOUT',
-    payload: {
-      isLoggedIn: false,
-      authKey: null
-    }
-  }
+      type: 'LOGOUT',
+      payload: {
+        isLoggedIn: false,
+        authKey: null,
+      },
+    };
 }
 
 export function isLoggedIn() {
-  console.log(localStorage.getItem("authKey") !== null);
-  var authKey = null
-  var isLoggedIn = false
-
-  if (localStorage.getItem("authKey") !== null ) {
-    authKey = localStorage.authKey
-    isLoggedIn = true
-  }
-  return {
-    type: 'IS_LOGGED_IN',
-    payload: {
-      isLoggedIn: isLoggedIn,
-      authKey: authKey
-    }
-  }
+  return authValidateToken();
 }

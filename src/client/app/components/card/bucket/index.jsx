@@ -58,7 +58,6 @@ export default class Bucket extends React.Component {
 
   handleWidget(e) {
     var action = e.target.dataset.widget
-    console.log(this.props);
     if (action == 'DELETE') {
       // AppActions.deleteCardPhoto({
       //   photoId: this.state.photocard.photo.id

@@ -5,7 +5,12 @@ import Draggable, {DraggableCore} from 'react-draggable';
 import {getButtons} from './button.props.js'
 import { Buttons, Info, Rotate, Albums, Comments, Tag, Map } from '../widgets'
 import '../../../stylesheets/photo-card/card.scss'
-import { loadPhoto, setWidget, addToAlbum, rotatePhoto, addComment, likePhoto } from '../../../actions/photoCardActions'
+import { loadPhoto,
+  setWidget,
+  addToAlbum,
+  rotatePhoto,
+  addComment,
+  likePhoto } from '../../../actions/photoCardActions'
 
 const components = {
   INFO:     Info,
@@ -21,7 +26,6 @@ const components = {
 @connect((store) => {
   return {
     selectedWidget: store.photoCard.get('selectedWidget'),
-    hidden: store.photoCard.get('hidden'),
     photoId: store.photoCard.get('photoId'),
     cardData: store.photoCard.get('cardData').toJS(),
   };
@@ -34,6 +38,9 @@ export default class PhotoCard extends React.Component {
     this.hide = this.hide.bind(this);
     this.addToAlbum  = this.addToAlbum.bind(this);
     this.addComment  = this.addComment.bind(this);
+    this.state = {
+      hidden: true,
+    };
   }
 
   componentWillMount() {
@@ -44,6 +51,7 @@ export default class PhotoCard extends React.Component {
 
   componentWillReceiveProps(nextProps){
     if (this.props.photoId != nextProps.photoId) {
+      this.setState({ hidden: false });
       this.props.dispatch(loadPhoto(nextProps.photoId))
     }
   }
@@ -86,7 +94,7 @@ export default class PhotoCard extends React.Component {
   }
 
   hide() {
-    this.setState({ hidden: !this.props.hidden })
+    this.setState({ hidden: !this.state.hidden });
   }
 
   likeState() {
@@ -94,9 +102,7 @@ export default class PhotoCard extends React.Component {
   }
 
   render() {
-
-
-    if (!Object.keys(this.props.cardData).length === 0 || this.props.hidden) {
+    if (!Object.keys(this.props.cardData).length || this.state.hidden) {
       return <FloatingButton onHide={this.hide}/>
     }
 

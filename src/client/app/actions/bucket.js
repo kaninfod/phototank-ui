@@ -1,46 +1,21 @@
 import AppConstants from '../constants/constants';
-
-var headers = new Headers({
-  'Authorization': localStorage.authKey
-});
-
-export function loadData() {
-  loadBucket();
-  loadAlbums();
-}
+import { bucket, bucketToggle, albums } from './api-calls';
 
 export function loadBucket() {
-  var url = '/api/bucket.json';
-  return function (dispatch) {
-    var request = new Request(url, { headers: headers });
-    fetch(request)
-      .then((response) => {
-        dispatch({ type: 'LOAD_BUCKET', payload: response.json() });
-      })
-      .catch((err) => {
-        dispatch({ type: 'LOAD_BUCKET', payload: err });
-      });
-  };
+  return bucket();
+}
+
+export function selectPhoto(photoId) {
+  return bucketToggle(photoId);
 }
 
 export function loadAlbums() {
-  var url = '/api/albums.json';
-  return function (dispatch) {
-    var request = new Request(url, { headers: headers });
-    fetch(request)
-      .then((response) => {
-        dispatch({ type: 'LOAD_ALBUMS', payload: response.json() });
-      })
-      .catch((err) => {
-        dispatch({ type: 'LOAD_ALBUMS', payload: err });
-      });
-  };
+  return albums();
 }
-
 
 export function setWidget(widget) {
   return {
     type: 'SET_WIDGET',
     payload: { widget: widget },
-  }
+  };
 }

@@ -4,13 +4,14 @@ import Widget from './widget.jsx';
 import lazyload from 'jquery-lazyload';
 import AppConstants from '../../constants/constants.js'
 
-import {loadPhotos, clickPhoto, deletePhoto, selectPhoto} from '../../actions/gridActions'
+import { loadPhotos, clickPhoto, deletePhoto } from '../../actions/gridActions'
+import { selectPhoto } from '../../actions/bucket'
 
 @connect((store) => {
   return {
     photos:store.grid.get('photos').toJS(),
     nextPage: store.grid.get('nextPage'),
-    bucket: store.grid.get('bucket').toJS(),
+    // bucket: store.grid.get('bucket').toJS(),
     loading: store.grid.get('loading'),
     selectedPhoto: store.grid.get('selectedPhoto'),
   };

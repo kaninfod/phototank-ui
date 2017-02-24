@@ -13,6 +13,7 @@ const initialState = Map(fromJS(init));
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case 'LOAD_PHOTO_FULFILLED': {
+      console.log(action.payload);
       var newState = state
           .set('photoId', action.payload.photo.id)
           .set('hidden', false)
@@ -21,7 +22,7 @@ export default function reducer(state = initialState, action) {
     }
 
     case 'CLICK_PHOTO': {
-      return state.set('photoId', action.payload.selectedPhoto);
+      return state.set('photoId', action.payload.selectedPhoto).set('hidden', false);
     }
 
     case 'SET_WIDGET': {
@@ -33,6 +34,7 @@ export default function reducer(state = initialState, action) {
     }
 
     case 'LIKE_PHOTO_FULFILLED': {
+      console.log('Like:', state.getIn(['cardData', 'photo', 'like']));
       return state.setIn(['cardData', 'photo', 'like'], action.payload.liked_by_current_user);
     }
   }

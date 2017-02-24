@@ -4,17 +4,28 @@ import { DefaultRoute, Router, Route, Link, IndexRoute, hashHistory, browserHist
 import Photos from './routes/Photos.jsx'
 import Login from './login.jsx'
 import store from "../store"
+import { connect } from "react-redux";
+import { isLoggedIn } from '../actions/authActions'
 
 
+@connect((store) => {
+  return {
+      authorized: store.auth.get('authorized')
+  };
+})
 export default class Root extends React.Component {
   constructor(props) {
      super(props);
      this.requireAuth = this.requireAuth.bind(this);
    }
 
+   componentWillMount() {
+     this.props.dispatch(isLoggedIn());
+   }
+
   requireAuth(nextState, replace ) {
-    var isLoggedIn = store.getState().auth.get('isLoggedIn')
-    if (!isLoggedIn) {
+    console.log('Authorized', this.props.authorized);
+    if (this.props.authorized) {
       replace({
         pathname: 'login',
         state: { nextPathname: nextState.location.pathname }
@@ -24,9 +35,17 @@ export default class Root extends React.Component {
     }
   }
 
-  render() {
-    return (
+  // shouldComponentUpdate() {
+  //   if (this.props.authorized == undefined) {
+  //     return true
+  //   }
+  //   return false
+  // }
 
+  render() {
+    console.log('render router');
+
+    return (
       <Router history={browserHistory}>
         <Route path="/" component={Photos} onEnter={this.requireAuth}/>
         <Route path="login" component={Login}/>
@@ -34,3 +53,10 @@ export default class Root extends React.Component {
     )
   }
 }
+
+
+// const routes = (props) => {
+//   return (
+//
+//   )
+// }
