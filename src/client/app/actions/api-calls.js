@@ -19,21 +19,18 @@ export function authValidateToken() {
 
 export function authenticate(payload) {
   var url = '/api/authenticate';
-  return function (dispatch) {
-    headers.append('Content-Type', 'application/json');
-    var request = new Request(url, {
-      headers: headers,
-      method: 'POST',
-      body: JSON.stringify(payload),
+  headers.append('Content-Type', 'application/json');
+  var request = new Request(url, {
+    headers: headers,
+    method: 'POST',
+    body: JSON.stringify(payload),
+  });
+  return fetch(request)
+    .then(response => {
+      return response.json();
+    }).catch(err => {
+      return err;
     });
-    fetch(request)
-      .then((response) => {
-        dispatch({ type: 'LOGIN', payload: response.json() });
-      })
-      .catch((err) => {
-        dispatch({ type: 'LOGIN', payload: err });
-      });
-  };
 }
 
 export function photos(url) {

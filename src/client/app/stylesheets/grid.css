@@ -1,3 +1,5 @@
+@import './material-icons';
+
 .alertify,  .alertify-logs {
   z-index: 2000;
 }
