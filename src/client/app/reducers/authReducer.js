@@ -1,27 +1,23 @@
 import AppConstants from '../constants/constants'
 import { List, Map, fromJS } from 'immutable';
-
+import { browserHistory } from 'react-router'
 
 var init = {
-  authorized: false
+  authorized: false,
+  session: !!sessionStorage.jwt
 }
 const initialState = Map(fromJS(init))
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-    case 'LOGIN_FULFILLED': {
-      localStorage.authKey = action.payload.auth_token;
-      return state
-        .set('isLoggedIn', true)
-        .set('authKey', action.payload.auth_token);
+    case 'LOG_IN_SUCCESS': {
+      browserHistory.push('/');
+      return !!sessionStorage.jwt;
     }
 
-    case 'LOGOUT': {
-      window.localStorage.removeItem('authKey');
-      return state
-        .set('isLoggedIn', action.payload.isLoggedIn)
-        .set('authKey', null);
-    }
+    case 'LOG_OUT':
+      browserHistory.push('/')
+      return !!sessionStorage.jwt
 
     case 'VALIDATE_TOKEN_FULFILLED': {
       return state.set('token', action.payload.token)

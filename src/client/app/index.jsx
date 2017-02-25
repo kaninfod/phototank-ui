@@ -1,14 +1,17 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
+import { Router, browserHistory } from 'react-router';
 import 'materialize-css/dist/css/materialize.css';
 import 'materialize-css/dist/js/materialize.js';
-import Root from './components/root.jsx';
+
 import { Provider } from 'react-redux';
+import routes from './routes';
 import store from './store';
+
 
 const app = document.getElementById('app');
 
-ReactDOM.render(
+render(
   <Provider store={store}>
-      <Root/>
+    <Router history={browserHistory} routes={routes} />
   </Provider>, app);
