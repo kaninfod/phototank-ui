@@ -30,11 +30,10 @@ export default function reducer(state = initialState, action) {
     }
 
     case 'ADD_COMMENT_FULFILLED': {
-      return state.setIn(['cardData', 'photo', 'comments'], fromJS(action.payload.comments));
+      return state.setIn(['cardData', 'comments'], fromJS(action.payload.comments));
     }
 
     case 'LIKE_PHOTO_FULFILLED': {
-      console.log('Like:', state.getIn(['cardData', 'photo', 'like']));
       return state.setIn(['cardData', 'photo', 'like'], action.payload.liked_by_current_user);
     }
   }

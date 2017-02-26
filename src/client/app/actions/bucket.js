@@ -1,5 +1,53 @@
 import AppConstants from '../constants/constants';
-import { bucket, bucketToggle, albums } from './api-calls';
+import { bucketAddComment, bucketRotate, bucketLike, bucket, bucketToggle, albums, bucketAddToAlbum } from './api-calls';
+
+export function likePhotosInBucket(albumId) {
+  return function(dispatch) {
+    return bucketLike()
+    .then(response => {
+      dispatch({ type: 'LIKE_PHOTOS_IN_BUCKET', payload: response });
+    })
+    .catch(error => {
+      throw(error);
+    });
+  };
+}
+
+export function rotatePhotosInBucket(degrees) {
+  return function(dispatch) {
+    return bucketRotate(degrees)
+    .then(response => {
+      dispatch({ type: 'ROTATE_PHOTOS_IN_BUCKET', payload: response });
+    })
+    .catch(error => {
+      throw(error);
+    });
+  };
+}
+
+export function addCommentToPhotosInBucket(comment) {
+  return function(dispatch) {
+    return bucketAddComment(comment)
+    .then(response => {
+      dispatch({ type: 'ROTATE_PHOTOS_IN_BUCKET', payload: response });
+    })
+    .catch(error => {
+      throw(error);
+    });
+  };
+}
+
+export function addBucketToAlbum(albumId) {
+  return function(dispatch) {
+    return bucketAddToAlbum(albumId)
+    .then(response => {
+      dispatch({ type: 'ADD_BUCKET_TO_ALBUM', payload: response });
+    })
+    .catch(error => {
+      throw(error);
+    });
+  };
+}
 
 export function loadBucket() {
   return bucket();
@@ -15,7 +63,7 @@ export function loadAlbums() {
 
 export function setWidget(widget) {
   return {
-    type: 'SET_WIDGET',
+    type: 'SET_BUCKET_WIDGET',
     payload: { widget: widget },
   };
 }

@@ -103,7 +103,7 @@ export default class PhotoCard extends React.Component {
 
   render() {
     if (!Object.keys(this.props.cardData).length || this.state.hidden) {
-      return <FloatingButton onHide={this.hide}/>
+      return null
     }
 
     const props = this.props

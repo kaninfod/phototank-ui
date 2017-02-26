@@ -6,7 +6,13 @@ import AppConstants from '../../../constants/constants';
 import Draggable, { DraggableCore } from 'react-draggable';
 import { getButtons } from './bucket-button.props';
 import { Buttons, Bucketgrid, Rotate, Albums, Comments, Tag } from '../widgets';
-import { loadBucket, loadAlbums, setWidget } from '../../../actions/bucket';
+import { addCommentToPhotosInBucket,
+  rotatePhotosInBucket,
+  likePhotosInBucket,
+  addBucketToAlbum,
+  loadBucket,
+  loadAlbums,
+  setWidget } from '../../../actions/bucket';
 
 
 const components = {
@@ -29,6 +35,10 @@ export default class Bucket extends React.Component {
   constructor(props) {
     super(props);
     this.handleWidget = this.handleWidget.bind(this);
+    this.addToAlbum = this.addToAlbum.bind(this);
+    this.rotatePhotos = this.rotatePhotos.bind(this);
+    this.addComment = this.addComment.bind(this);
+    this.likePhotos = this.likePhotos.bind(this);
     this.hide = this.hide.bind(this);
     this.state = {
       hidden: true,
@@ -37,7 +47,7 @@ export default class Bucket extends React.Component {
 
   componentWillMount() {
     this.props.dispatch(loadBucket());
-    this.props.dispatch(loadAlbums());
+    // this.props.dispatch(loadAlbums());
   }
 
   hide() {
@@ -46,15 +56,24 @@ export default class Bucket extends React.Component {
 
   deletePhotos() {}
 
-  likePhotos() {}
+  likePhotos() {
+    this.props.dispatch(likePhotosInBucket());
+  }
 
   likeState() { }
 
-  rotatePhotos() {}
+  rotatePhotos(degrees) {
+    this.props.dispatch(rotatePhotosInBucket(degrees))
+  }
 
-  addToAlbum() {}
+  addToAlbum(albumId) {
+    this.props.dispatch(addBucketToAlbum(albumId));
+  }
 
-  addComment() {}
+  addComment(comment) {
+    console.log(comment);
+    this.props.dispatch(addCommentToPhotosInBucket(comment));
+  }
 
   handleWidget(e) {
     var action = e.target.dataset.widget
@@ -63,7 +82,7 @@ export default class Bucket extends React.Component {
       //   photoId: this.state.photocard.photo.id
       // });
     } else if (action == 'LIKE') {
-      this.props.dispatch(likePhoto())
+      this.props.dispatch(likePhotosInBucket());
     } else {
       this.props.dispatch(setWidget(action))
     }
@@ -75,12 +94,14 @@ export default class Bucket extends React.Component {
     const buttons = getButtons({ likeState: this.likeState() });
     const WidgetType = components[props.selectedWidget];
     const widgetHandlers = {
-      ROTATE:   this.rotatePhoto,
+      ROTATE:   this.rotatePhotos,
       ALBUMS:   this.addToAlbum,
       COMMENTS: this.addComment,
       HIDE:     this.hide,
     };
-
+    if (!['BUCKETGRID'].includes(props.selectedWidget)) {
+      buttons.vert = []
+    }
     return (
       <Draggable handle=".header">
         <div className="card pt-card upper-right show">

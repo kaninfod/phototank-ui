@@ -3,6 +3,8 @@ import { connect } from "react-redux"
 import Widget from './widget.jsx';
 import lazyload from 'jquery-lazyload';
 import AppConstants from '../../constants/constants.js'
+import PhotoCard from '../card/photo'
+import Bucket from '../card/bucket'
 
 import { loadPhotos, clickPhoto, deletePhoto } from '../../actions/gridActions'
 import { selectPhoto } from '../../actions/bucket'
@@ -30,8 +32,10 @@ export default class Grid extends React.Component {
     this.props.dispatch(loadPhotos(this.props.nextPage))
   }
 
-  componentDidUpdate() {
-    $(window).scroll(event, function() {this.handleScroll(event)}.bind(this))
+  componentDidUpdate(prevProps, prevState) {
+    window.addEventListener('scroll', function(event) {
+        this.handleScroll(event)
+    }.bind(this));
     $('.lazy').lazyload()
   }
 
@@ -66,6 +70,11 @@ export default class Grid extends React.Component {
           }.bind(this))}
         </div>
         <div className="row loadMore"></div>
+        <div>
+          <Bucket/>
+          <PhotoCard/>
+        </div>
+
         {this.loading = this.props.loading}
       </div>
       );

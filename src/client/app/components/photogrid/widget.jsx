@@ -14,7 +14,7 @@ export default class Widget extends React.Component {
   }
 
   handleHover(e) {
-    var overlayButton = $(this.refs.widget).find(".overlay-button:not(.overlay-processing)");
+    var overlayButton = $(this.refs.widget).find('.overlay-button:not(.overlay-processing)');
     if (e.type == 'mouseenter')
       overlayButton.addClass('overlay-show');
     else
@@ -41,14 +41,14 @@ export default class Widget extends React.Component {
     return (
 
         <div
-          id={this.props.photo.id} className=" hoverable photo-widget z-depth-1" ref="widget"
+          id={this.props.photo.id} className="hoverable photo-widget z-depth-1" ref="widget"
           onMouseEnter={this.handleHover} onMouseLeave={this.handleHover}>
           <div className="photo-widget-content"></div>
             <div className="photo-widget-header">
 
               <img
                 className="lazy" id={this.props.photo.id} onClick={this.handleClick}
-                data-original={this.props.photo.url.concat('?token=', localStorage.authKey)}/>
+                data-original={this.props.photo.url.concat('?token=', sessionStorage.jwt)}/>
 
               <div className={'overlay-button overlay-select ' +
                 (this.props.photo.bucket ? 'selected' : '')}

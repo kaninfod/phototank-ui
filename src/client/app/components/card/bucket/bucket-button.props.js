@@ -36,24 +36,18 @@ export function getButtons(modifiers) {
           icon: 'local_offer',
           key: 5,
         },
+        {
+          color: 'deep-purple lighten-3',
+          widgetContent: 'DELETE',
+          icon: 'delete_forever',
+          key: 6,
+        },
       ],
       vert: [
         {
           color: 'modifiers.likeState',
           widgetContent: 'LIKE',
           icon: 'thumb_up', key: 3,
-        },
-        {
-          color: 'orange lighten-2',
-          widgetContent: 'MAP',
-          icon: 'map',
-          key: 2,
-        },
-        {
-          color: 'deep-purple lighten-3',
-          widgetContent: 'DELETE',
-          icon: 'delete_forever',
-          key: 1,
         },
       ],
     }

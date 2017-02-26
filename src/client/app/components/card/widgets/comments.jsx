@@ -18,8 +18,8 @@ export default class Comment extends React.Component {
   }
 
   render() {
-    const comments = this.props.data.photo.comments;
-    const avatar = this.props.data.current_user.avatar.concat('?token=', localStorage.authKey);
+    const comments = this.props.data.comments;
+    const avatar = this.props.data.current_user.avatar.concat('?token=', sessionStorage.jwt);
     return (
       <div className="pt-widget">
         <Header handleClose={this.props.widgetHandlers.HIDE} title="Add comments to Photo"/>
@@ -45,7 +45,7 @@ export default class Comment extends React.Component {
 }
 
 var comment = function (comment) {
-  const avatar = comment.user_avatar.concat('?token=', localStorage.authKey);
+  const avatar = comment.user_avatar.concat('?token=', sessionStorage.jwt);
   return (
     <div className="comment" key={comment.id}>
       <div className="comment-container">

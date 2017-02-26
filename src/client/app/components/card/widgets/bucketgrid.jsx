@@ -23,7 +23,7 @@ const Bucketgrid = React.createClass({
 const photo = (props) => {
   return (
 
-      <img class="responsive-img" key={props.id} src={props.photo_url.concat('?token=', localStorage.authKey)}/>
+      <img class="responsive-img" key={props.id} src={props.photo_url.concat('?token=', sessionStorage.jwt)}/>
 
   );
 };

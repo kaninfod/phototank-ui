@@ -10,14 +10,18 @@ export default class Tag extends React.Component {
   }
 
   render() {
+    if ('bucket' in this.props.data) {
+      var photoId = 0
+    } else {
+      var photoId = this.props.data.photo.id
+    }
+
     return (
       <div className="pt-widget">
         <Header handleClose={this.props.widgetHandlers.HIDE} title="Add tag to photo"/>
         <div className="pt-widget content">
           <div className="pt-tags">
-            <PhotoTagger photoId={this.props.data.photo.id}
-              tags={this.props.data.photo.tags}/
-              >
+            <PhotoTagger photoId={photoId} tags={this.props.data.tags}/>
           </div>
         </div>
       </div>

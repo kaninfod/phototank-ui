@@ -2,7 +2,7 @@ import AppConstants from '../constants/constants';
 import { photo, albumAddPhoto, photoRotate, photoAddComment, photoLike } from './api-calls';
 
 var headers = new Headers({
-  'Authorization': localStorage.authKey,
+  'Authorization': sessionStorage.jwt,
 });
 
 export function loadPhoto(photoId) {
