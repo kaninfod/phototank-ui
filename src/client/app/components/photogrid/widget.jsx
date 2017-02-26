@@ -1,5 +1,4 @@
 import React from 'react';
-import '../../stylesheets/grid.css';
 
 export default class Widget extends React.Component {
   constructor(props) {

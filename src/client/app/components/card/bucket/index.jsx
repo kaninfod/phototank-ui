@@ -41,7 +41,7 @@ export default class Bucket extends React.Component {
     this.likePhotos = this.likePhotos.bind(this);
     this.hide = this.hide.bind(this);
     this.state = {
-      hidden: true,
+      hidden: this.props.hidden,
     };
   };
 
@@ -71,7 +71,6 @@ export default class Bucket extends React.Component {
   }
 
   addComment(comment) {
-    console.log(comment);
     this.props.dispatch(addCommentToPhotosInBucket(comment));
   }
 
@@ -89,7 +88,8 @@ export default class Bucket extends React.Component {
   }
 
   render() {
-    if (this.state.hidden) { return <FloatingButton onHide={this.hide}/> }
+    console.log('I just did it');
+    if (this.props.hidden) { return <FloatingButton onHide={this.hide}/> }
     const props = this.props
     const buttons = getButtons({ likeState: this.likeState() });
     const WidgetType = components[props.selectedWidget];
@@ -99,9 +99,11 @@ export default class Bucket extends React.Component {
       COMMENTS: this.addComment,
       HIDE:     this.hide,
     };
+
     if (!['BUCKETGRID'].includes(props.selectedWidget)) {
       buttons.vert = []
     }
+
     return (
       <Draggable handle=".header">
         <div className="card pt-card upper-right show">

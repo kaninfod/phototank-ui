@@ -1,11 +1,11 @@
 import React from 'react';
 import { connect } from "react-redux"
-import Widget from './widget.jsx';
+import '../../stylesheets/grid';
+import Widget from './widget';
 import lazyload from 'jquery-lazyload';
 import AppConstants from '../../constants/constants.js'
 import PhotoCard from '../card/photo'
 import Bucket from '../card/bucket'
-
 import { loadPhotos, clickPhoto, deletePhoto } from '../../actions/gridActions'
 import { selectPhoto } from '../../actions/bucket'
 
@@ -13,7 +13,6 @@ import { selectPhoto } from '../../actions/bucket'
   return {
     photos:store.grid.get('photos').toJS(),
     nextPage: store.grid.get('nextPage'),
-    // bucket: store.grid.get('bucket').toJS(),
     loading: store.grid.get('loading'),
     selectedPhoto: store.grid.get('selectedPhoto'),
   };
@@ -71,10 +70,8 @@ export default class Grid extends React.Component {
         </div>
         <div className="row loadMore"></div>
         <div>
-          <Bucket/>
-          <PhotoCard/>
+          { this.props.children }
         </div>
-
         {this.loading = this.props.loading}
       </div>
       );
