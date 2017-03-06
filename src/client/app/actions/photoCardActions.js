@@ -1,9 +1,6 @@
 import AppConstants from '../constants/constants';
-import { photo, albumAddPhoto, photoRotate, photoAddComment, photoLike } from './api-calls';
-
-var headers = new Headers({
-  'Authorization': sessionStorage.jwt,
-});
+import { albumAddPhoto } from '../api/apiAlbums';
+import { photo, photoRotate, photoAddComment, photoLike } from '../api/apiPhotos';
 
 export function loadPhoto(photoId) {
   return photo(photoId);

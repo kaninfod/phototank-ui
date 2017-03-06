@@ -1,5 +1,5 @@
 import AppConstants from '../constants/constants'
-import { authenticate, authValidateToken } from './api-calls';
+import { authenticate, authValidateToken } from '../api/apiAuth';
 
 export function loginSuccess() {
   return { type: 'LOG_IN_SUCCESS' };

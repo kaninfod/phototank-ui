@@ -1,5 +1,6 @@
 import AppConstants from '../constants/constants';
-import { bucketAddComment, bucketRotate, bucketLike, bucket, bucketToggle, albums, bucketAddToAlbum } from './api-calls';
+import { bucketAddComment, bucketRotate, bucketLike, bucket, bucketToggle, bucketAddToAlbum } from '../api/apiBucket';
+import { albums } from '../api/apiAlbums';
 
 export function likePhotosInBucket(albumId) {
   return function(dispatch) {

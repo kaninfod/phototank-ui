@@ -12,7 +12,6 @@ export default (
     <IndexRoute component={Home} />
     <Route path="/login" component={Login} />
     <Route path="/photos" component={Photos} onEnter={requireAuth}>
-
     </Route>
   </Route>
 );

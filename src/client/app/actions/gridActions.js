@@ -1,8 +1,30 @@
-import AppConstants from '../constants/constants'
-import { photos, bucketToggle, photoDelete } from './api-calls';
+import AppConstants from '../constants/constants';
+import { photos, photoDelete } from '../api/apiPhotos';
+import { bucketToggle } from '../api/apiBucket';
 
-export function loadPhotos(url) {
-  return photos(url);
+export function getNextPage(params) {
+  return function(dispatch) {
+    dispatch({ type: 'LOAD_PHOTOS_PENDING', payload: {} });
+    return photos(params)
+    .then(response => {
+      dispatch({ type: 'LOAD_PHOTOS_FULFILLED', payload: response });
+    })
+    .catch(error => {
+      throw(error);
+    });
+  };
+}
+
+export function updateSearchParams(payload) {
+  return function(dispatch) {
+    dispatch({
+      type: 'UPDATE_SEARCH_PARAMS',
+      payload: {
+        key: payload.key,
+        value: payload.value,
+      },
+    })
+  };
 }
 
 export function clickPhoto(photoId) {
