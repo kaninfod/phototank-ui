@@ -5,11 +5,13 @@ import PhotoCard from '../components/card/photo';
 import Bucket from '../components/card/bucket';
 import BottomPanel from '../components/bottom-panel';
 import { selectPhoto } from '../actions/bucket';
-import { getNextPage, updateSearchParams } from '../actions/gridActions'
+import { getNextPage, updateSearchParams, getCountries } from '../actions/gridActions'
 
 @connect((store) => {
   return {
-    photos: store.bucket.getIn(['data', 'bucket']).toJS(),
+    photosGrid: store.grid.get('photos').toJS(),
+    countries: store.grid.get('countries').toJS(),
+    photosBucket: store.bucket.getIn(['data', 'bucket']).toJS(),
     searchParams: store.grid.get('searchParams').toJS(),
   };
 })
@@ -25,6 +27,14 @@ class Photos extends React.Component {
     };
   };
 
+  componentWillMount() {
+    this.props.dispatch(getCountries());
+    this.props.dispatch(updateSearchParams({
+      change: [],
+      searchParams: this.props.searchParams
+    }));
+  }
+
   hideBucket() {
     this.setState({ hidden: !this.state.hidden });
   }
@@ -34,36 +44,47 @@ class Photos extends React.Component {
   }
 
   handleInfiniteScroll() {
-    this.props.dispatch(getNextPage(getSearchParams(this.props.searchParams)));
+    this.props.dispatch(updateSearchParams({
+      change: [],
+      searchParams: this.props.searchParams
+    }));
+    // this.props.dispatch(getNextPage(this.props.searchParams));
   }
 
   updateSearchParams(key, value) {
-    // var searchParams = getSearchParams(this.props.searchParams);
-    // searchParams[key] = value;
-    this.props.dispatch(updateSearchParams({key: key, value: value,}));
-    // console.log('inbetween', this.props.searchParams.direction);
-    // this.props.dispatch(getNextPage(getSearchParams(this.props.searchParams)));
+    this.props.dispatch(updateSearchParams({
+      change: [
+        { key: key, value: value},
+        { key: 'page', value: 1},
+      ],
+      searchParams: this.props.searchParams
+    }));
   }
 
   render () {
-    var searchParams = getSearchParams(this.props.searchParams)
-    console.log(this.props.searchParams.direction);
+    var searchParams = this.props.searchParams
+
     return (
       <div>
+
         <Grid
           searchParams={searchParams}
-          onNextPage={this.handleInfiniteScroll}>
+          onNextPage={this.handleInfiniteScroll}
+          photos={this.props.photosGrid}
+          >
           <PhotoCard/>
           <Bucket
             hidden={this.state.hidden}
             onHideBucket={this.hideBucket}
             onRemovePhoto={this.removeBucketPhoto}/>
           <BottomPanel
-            onShowBucket={this.hideBucket}
-            photos={this.props.photos}
-            onRemovePhoto={this.removeBucketPhoto}
+            count={this.props.photosGrid.length}
+            photos={this.props.photosBucket}
+            countries={this.props.countries}
             searchParams={searchParams}
             updateSearchParams={this.updateSearchParams}
+            onRemovePhoto={this.removeBucketPhoto}
+            onShowBucket={this.hideBucket}
           />
         </Grid>
       </div>
@@ -73,7 +94,7 @@ class Photos extends React.Component {
 
 function getSearchParams(props) {
   var params = {
-    page: props.nextPage,
+    page: props.page,
     startdate: props.startdate,
     country: props.country,
     like: props.like,

@@ -11,8 +11,9 @@ import { selectPhoto } from '../../actions/bucket'
 
 @connect((store) => {
   return {
-    photos:store.grid.get('photos').toJS(),
+    // photos:store.grid.get('photos').toJS(),
     // params: store.grid.get('params').toJS(),
+    last_page: store.grid.getIn(['pagination', 'last_page']),
     loading: store.grid.get('loading'),
     selectedPhoto: store.grid.get('selectedPhoto'),
   };
@@ -27,11 +28,6 @@ export default class Grid extends React.Component {
     this.loading = true
   }
 
-  componentWillMount() {
-    this.props.onNextPage()
-    // this.props.dispatch(loadPhotos(this.props.searchParams))
-  }
-
   componentDidUpdate(prevProps, prevState) {
     window.addEventListener('scroll', function(event) {
         this.handleScroll(event)
@@ -43,10 +39,6 @@ export default class Grid extends React.Component {
     this.props.dispatch(selectPhoto(photoId))
   }
 
-  // updatePhotoGrid() {
-  //   this.props.dispatch(loadPhotos(this.props.nextPage, params))
-  // }
-
   handleDelete(photoId) {
     this.props.dispatch(deletePhoto(photoId))
   }
@@ -56,11 +48,11 @@ export default class Grid extends React.Component {
   }
 
   handleScroll(event) {
+
     var scrollPosition = $('.loadMore').offset().top  - ($(window).height() + $(window).scrollTop() + this.props.offset)
-    if (scrollPosition < 0 && this.loading && this.props.nextPage != undefined){
+    if (scrollPosition < 0 && this.loading && !this.props.last_page) {
       this.loading = false
       this.props.onNextPage()
-      // this.props.dispatch(loadPhotos(this.props.searchParams))
     }
   }
 
@@ -85,6 +77,6 @@ export default class Grid extends React.Component {
 
 Grid.defaultProps = {
   photos: [],
-  offset: 800,
+  offset: 600,
   nextPage: "/api/photos.json?page=1",
 };

@@ -3,12 +3,9 @@ import '../../stylesheets/panel';
 import Tab from './tab';
 import Content from './content';
 import Buttons from '../card/widgets/buttons';
-import BucketThumb from '../card/widgets/bucket-thumb';
 import { getButtons } from './bucket-button.props';
-import Toggle from 'material-ui/Toggle';
-import DatePicker from 'material-ui/DatePicker';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
+import SearchPanel from './searchPanel';
+import BucketPanel from './bucketPanel';
 
 class BottomPanel extends React.Component {
   constructor(props) {
@@ -16,7 +13,11 @@ class BottomPanel extends React.Component {
     this.handleClick = this.handleClick.bind(this);
     this.closePanel = this.closePanel.bind(this);
     this.toggleDirection = this.toggleDirection.bind(this);
+    this.toggleLikedOnly = this.toggleLikedOnly.bind(this);
+    this.changeDate = this.changeDate.bind(this);
+    this.changeCountry = this.changeCountry.bind(this);
     this.showBucketDialog = this.showBucketDialog.bind(this);
+
     // this.handleSearchParams = this.handleSearchParams.bind(this);
     this.state = {
       mainPanel: { open: false },
@@ -71,17 +72,28 @@ class BottomPanel extends React.Component {
     this.props.updateSearchParams('direction', e.target.checked);
   }
 
+  toggleLikedOnly(e) {
+    this.props.updateSearchParams('like', e.target.checked);
+  }
+
+  changeDate(e, date) {
+    this.props.updateSearchParams('startdate', date);
+  }
+
+  changeCountry(e, key, value) {
+    this.props.updateSearchParams('country', value);
+  }
+
   render () {
     const searchPanel = this.state.panels[0];
     const bucketPanel = this.state.panels[1];
     const closePanel = this.state.panels[2];
     const mainPanel   = this.state.mainPanel;
-    var photos = this.props.photos.map(bucketPhoto => {
-      return BucketThumb({ bucketPhoto: bucketPhoto, onRemovePhoto: this.props.onRemovePhoto });
-    });
 
     return (
+
     <div id="pt-panel" class={'pt-panel ' + (mainPanel.open ? 'open' : '')}>
+
       <div class="pt-panel-tabs">
         <Tab data={searchPanel} clickHandler={this.handleClick}/>
         <Tab data={bucketPanel} clickHandler={this.handleClick}/>
@@ -89,68 +101,30 @@ class BottomPanel extends React.Component {
       </div>
 
       <div class="pt-panel-contents">
+        <p>{this.props.count}</p>
         <Content data={searchPanel}>
-          <div class="pt-bucket-tools row">
-            <div class="col l4">
-              <DatePicker hintText="Start date" />
-              <div class="switch">
-                <label>
-                  Backwards
-                  <input id="direction" type="checkbox"
-                    checked={this.props.searchParams.direction}
-                    onChange={this.toggleDirection}/>
-                  <span class="lever"></span>
-                  Forwards
-                </label>
-              </div>
-              <Toggle label="Search forward"/>
-              <Toggle label="Liked"/>
-              <Toggle label="Liked"/>
-            </div>
-            <div class="col l4">
-              <SelectField
-                floatingLabelText="Frequency"
-                value={this.state.value}
-                onChange={this.handleChange}>
-                <MenuItem value={1} primaryText="Never" />
-                <MenuItem value={2} primaryText="Every Night" />
-                <MenuItem value={3} primaryText="Weeknights" />
-                <MenuItem value={4} primaryText="Weekends" />
-                <MenuItem value={5} primaryText="Weekly" />
-              </SelectField>
-              <div class="input-field col s12">
-                <select>
-                  <option value=""  defaultValue>Choose your option</option>
-                  <option value="1">Option 1</option>
-                  <option value="2">Option 2</option>
-                  <option value="3">Option 3</option>
-                </select>
-                <label>Materialize Select</label>
-              </div>
-            </div>
-          </div>
+          <SearchPanel
+            countries={this.props.countries}
+            searchParams={this.props.searchParams}
+            updateSearchParams={this.updateSearchParams}
+            changeCountry={this.changeCountry}
+            changeDate={this.changeDate}
+            toggleLikedOnly={this.toggleLikedOnly}
+            toggleDirection={this.toggleDirection}
+            />
         </Content>
+
         <Content data={bucketPanel}>
-          <div class="pt-bucket-tools">
-            <a className={ 'btn-floating waves-effect waves-light pt-button' }
-              onClick={this.props.onShowBucket}>
-              <i className="material-icons">
-                info
-              </i>
-            </a>
-            <div class="pt-button" onClick={this.props.onShowBucket}/>
-          </div>
-
-          <div class="pt-bucket-photos" >
-            <div class="pt-bucket-photos-container" >
-              {photos}
-            </div>
-          </div>
-
+          <BucketPanel
+            onShowBucket={this.props.onShowBucket}
+            photos={this.props.photos}
+            onRemovePhoto={this.props.onRemovePhoto}
+            />
         </Content>
       </div>
     </div>);
   }
 }
+
 
 export default BottomPanel;

@@ -11,7 +11,7 @@ export function photos(params) {
   });
   return fetch(request)
     .then(response => {
-      return response.json();
+      return { json: response.json(), pagination: response.headers };
     }).catch(err => {
       return err;
     });
@@ -19,16 +19,14 @@ export function photos(params) {
 
 export function photo(photoId) {
   var url = '/api/photos/'.concat(photoId, '.json');
-  return function (dispatch) {
-    var request = new Request(url, { headers: headers });
-    fetch(request)
-      .then((response) => {
-        dispatch({ type: 'LOAD_PHOTO', payload: response.json() });
-      })
-      .catch((err) => {
-        dispatch({ type: 'LOAD_PHOTO', payload: err });
-      });
-  };
+  var request = new Request(url, { headers: headers });
+  return fetch(request)
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => {
+      return err;
+    });
 }
 
 export function photoDelete(photoId) {

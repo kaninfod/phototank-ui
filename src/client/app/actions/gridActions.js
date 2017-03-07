@@ -1,9 +1,11 @@
-import AppConstants from '../constants/constants';
+import stateTypes from '../constants/stateTypes';
 import { photos, photoDelete } from '../api/apiPhotos';
 import { bucketToggle } from '../api/apiBucket';
+import { locationCountries } from '../api/apiLocations';
+import store from '../store';
 
 export function getNextPage(params) {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({ type: 'LOAD_PHOTOS_PENDING', payload: {} });
     return photos(params)
     .then(response => {
@@ -16,14 +18,21 @@ export function getNextPage(params) {
 }
 
 export function updateSearchParams(payload) {
-  return function(dispatch) {
-    dispatch({
-      type: 'UPDATE_SEARCH_PARAMS',
-      payload: {
-        key: payload.key,
-        value: payload.value,
-      },
-    })
+  return function (dispatch) {
+    if (!!payload.change.length) {
+      dispatch({
+          type: 'UPDATE_SEARCH_PARAMS',
+          payload: payload.change,
+        }
+      );
+    }
+
+    var searchParams = store.getState().grid.get('searchParams').toJS();
+    return photos(searchParams)
+    .then(response => {
+      dispatch({ type: 'SET_HEADER', payload: response.pagination });
+      dispatch({ type: 'LOAD_PHOTOS', payload: response.json });
+    });
   };
 }
 
@@ -42,4 +51,16 @@ export function selectPhoto(photoId) {
 
 export function deletePhoto(photoId) {
   return photoDelete(photoId);
+}
+
+export function getCountries() {
+  return function (dispatch) {
+    return locationCountries()
+    .then(response => {
+      dispatch({ type: stateTypes.LOAD_COUNTRIES_FULFILLED, payload: response });
+    })
+    .catch(error => {
+      throw(error);
+    });
+  };
 }

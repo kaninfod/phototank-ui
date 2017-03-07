@@ -13,7 +13,6 @@ const initialState = Map(fromJS(init));
 export default function reducer(state = initialState, action) {
   switch (action.type) {
     case stateTypes.LOAD_PHOTO_FULFILLED: {
-      console.log(action.payload);
       var newState = state
           .set('photoId', action.payload.photo.id)
           .set('hidden', false)
