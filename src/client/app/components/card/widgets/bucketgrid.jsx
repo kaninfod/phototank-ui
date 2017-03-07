@@ -1,10 +1,11 @@
 import React, { PropTypes } from 'react';
 import { Header } from './header.jsx';
+import BucketThumb from './bucket-thumb';
 
 const Bucketgrid = React.createClass({
   render() {
-    var photos = this.props.data.bucket.map(entry => {
-      return photo(entry);
+    var photos = this.props.data.bucket.map(bucketPhoto => {
+      return BucketThumb({ bucketPhoto: bucketPhoto, onRemovePhoto: this.props.widgetHandlers.REMOVE_FROM_BUCKET });
     });
 
     return (
@@ -19,13 +20,5 @@ const Bucketgrid = React.createClass({
     );
   },
 });
-
-const photo = (props) => {
-  return (
-
-      <img class="responsive-img" key={props.id} src={props.photo_url.concat('?token=', sessionStorage.jwt)}/>
-
-  );
-};
 
 export default Bucketgrid;

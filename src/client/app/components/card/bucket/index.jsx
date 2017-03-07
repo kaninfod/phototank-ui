@@ -39,19 +39,14 @@ export default class Bucket extends React.Component {
     this.rotatePhotos = this.rotatePhotos.bind(this);
     this.addComment = this.addComment.bind(this);
     this.likePhotos = this.likePhotos.bind(this);
-    this.hide = this.hide.bind(this);
+    // this.hide = this.hide.bind(this);
     this.state = {
-      hidden: true,
+      hidden: this.props.hidden,
     };
   };
 
   componentWillMount() {
     this.props.dispatch(loadBucket());
-    // this.props.dispatch(loadAlbums());
-  }
-
-  hide() {
-    this.setState({ hidden: !this.state.hidden });
   }
 
   deletePhotos() {}
@@ -71,7 +66,6 @@ export default class Bucket extends React.Component {
   }
 
   addComment(comment) {
-    console.log(comment);
     this.props.dispatch(addCommentToPhotosInBucket(comment));
   }
 
@@ -89,7 +83,8 @@ export default class Bucket extends React.Component {
   }
 
   render() {
-    if (this.state.hidden) { return <FloatingButton onHide={this.hide}/> }
+
+    if (this.props.hidden) { return null}//<FloatingButton onHide={this.props.onHideBucket}/> }
     const props = this.props
     const buttons = getButtons({ likeState: this.likeState() });
     const WidgetType = components[props.selectedWidget];
@@ -97,11 +92,14 @@ export default class Bucket extends React.Component {
       ROTATE:   this.rotatePhotos,
       ALBUMS:   this.addToAlbum,
       COMMENTS: this.addComment,
-      HIDE:     this.hide,
+      HIDE:     this.props.onHideBucket,
+      REMOVE_FROM_BUCKET: this.props.onRemovePhoto
     };
+
     if (!['BUCKETGRID'].includes(props.selectedWidget)) {
       buttons.vert = []
     }
+
     return (
       <Draggable handle=".header">
         <div className="card pt-card upper-right show">
@@ -114,13 +112,3 @@ export default class Bucket extends React.Component {
    );
   }
 }
-
-const FloatingButton = (props) => {
-  return (
-    <a onClick={props.onHide} className="fixed-action-button btn-floating waves-effect waves-light">
-      <i className="material-icons">
-        info
-      </i>
-    </a>
-  );
-};

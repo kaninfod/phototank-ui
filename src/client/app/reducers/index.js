@@ -1,8 +1,8 @@
 import { combineReducers } from "redux";
-import grid from './gridReducer';
-import photoCard from './photoCardReducer';
-import tagger from './taggerReducer';
-import auth from './authReducer';
+import grid from './grid';
+import photoCard from './photoCard';
+import tagger from './tagger';
+import auth from './auth';
 import bucket from './bucket';
 
 export default combineReducers({
