@@ -4,12 +4,20 @@ import Grid from '../components/photogrid/grid';
 import PhotoCard from '../components/card/photo';
 import Bucket from '../components/card/bucket';
 import BottomPanel from '../components/bottom-panel';
-import { selectPhoto } from '../actions/bucket';
-import { getNextPage, updateSearchParams, getCountries } from '../actions/gridActions'
+import { selectPhoto } from '../actions/actBucket';
+import { loadPhotos,
+  clickPhoto,
+  deletePhoto,
+  getNextPage,
+  getPhotos,
+  getCountries } from '../actions/actGrid'
 
 @connect((store) => {
   return {
-    photosGrid: store.grid.get('photos').toJS(),
+    selectedPhoto: store.grid.get('selectedPhoto'),
+    loading: store.grid.get('loading'),
+    lastPage: store.grid.getIn(['pagination', 'last_page']),
+    photos: store.grid.get('photos'),
     countries: store.grid.get('countries').toJS(),
     photosBucket: store.bucket.getIn(['data', 'bucket']).toJS(),
     searchParams: store.grid.get('searchParams').toJS(),
@@ -21,7 +29,10 @@ class Photos extends React.Component {
     this.hideBucket = this.hideBucket.bind(this);
     this.handleInfiniteScroll = this.handleInfiniteScroll.bind(this);
     this.removeBucketPhoto = this.removeBucketPhoto.bind(this);
-    this.updateSearchParams = this.updateSearchParams.bind(this)
+    this.getPhotos = this.getPhotos.bind(this)
+    this.handleClick = this.handleClick.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    this.handleSelect = this.handleSelect.bind(this);
     this.state = {
       hidden: true,
     };
@@ -29,7 +40,8 @@ class Photos extends React.Component {
 
   componentWillMount() {
     this.props.dispatch(getCountries());
-    this.props.dispatch(updateSearchParams({
+    this.props.dispatch(getPhotos({
+      context:this.props.params.context,
       change: [],
       searchParams: this.props.searchParams
     }));
@@ -44,33 +56,54 @@ class Photos extends React.Component {
   }
 
   handleInfiniteScroll() {
-    this.props.dispatch(updateSearchParams({
-      change: [],
+    this.props.dispatch(getPhotos({
+      context:this.props.params.context,
       searchParams: this.props.searchParams
     }));
-    // this.props.dispatch(getNextPage(this.props.searchParams));
   }
 
-  updateSearchParams(key, value) {
-    this.props.dispatch(updateSearchParams({
+  getPhotos(key, value) {
+    this.props.dispatch(getPhotos({
       change: [
         { key: key, value: value},
         { key: 'page', value: 1},
       ],
+      context:this.props.params.context,
       searchParams: this.props.searchParams
     }));
+  }
+
+  handleSelect(photoId) {
+    this.props.dispatch(selectPhoto(photoId))
+  }
+
+  handleDelete(photoId) {
+    this.props.dispatch(deletePhoto(photoId))
+  }
+
+  handleClick(photoId) {
+    this.props.dispatch(clickPhoto(photoId))
   }
 
   render () {
     var searchParams = this.props.searchParams
 
+    const photoActions = {
+      DELETE: this.handleDelete,
+      SELECT: this.handleSelect,
+      CLICK:  this.handleClick ,
+      SCROLL: this.handleInfiniteScroll,
+    }
+
     return (
       <div>
-
         <Grid
+          type="freeform"
           searchParams={searchParams}
-          onNextPage={this.handleInfiniteScroll}
-          photos={this.props.photosGrid}
+          photos={this.props.photos}
+          lastPage={this.props.lastPage}
+          loading={this.props.loading}
+          photoActions={photoActions}
           >
           <PhotoCard/>
           <Bucket
@@ -78,15 +111,15 @@ class Photos extends React.Component {
             onHideBucket={this.hideBucket}
             onRemovePhoto={this.removeBucketPhoto}/>
           <BottomPanel
-            count={this.props.photosGrid.length}
             photos={this.props.photosBucket}
             countries={this.props.countries}
             searchParams={searchParams}
-            updateSearchParams={this.updateSearchParams}
+            getPhotos={this.getPhotos}
             onRemovePhoto={this.removeBucketPhoto}
             onShowBucket={this.hideBucket}
           />
         </Grid>
+
       </div>
     );
   }

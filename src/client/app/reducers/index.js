@@ -1,9 +1,10 @@
 import { combineReducers } from "redux";
-import grid from './grid';
-import photoCard from './photoCard';
-import tagger from './tagger';
-import auth from './auth';
-import bucket from './bucket';
+import grid from './redGrid';
+import photoCard from './redPhotoCard';
+import tagger from './redTagger';
+import auth from './redAuth';
+import bucket from './redBucket';
+import catalog from './redCatalog';
 
 export default combineReducers({
   grid,
@@ -11,4 +12,5 @@ export default combineReducers({
   tagger,
   auth,
   bucket,
-})
+  catalog,
+});

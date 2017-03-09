@@ -12,7 +12,7 @@ import { addCommentToPhotosInBucket,
   addBucketToAlbum,
   loadBucket,
   loadAlbums,
-  setWidget } from '../../../actions/bucket';
+  setWidget } from '../../../actions/actBucket';
 
 
 const components = {
@@ -84,7 +84,7 @@ export default class Bucket extends React.Component {
 
   render() {
 
-    if (this.props.hidden) { return null}//<FloatingButton onHide={this.props.onHideBucket}/> }
+    if (this.props.hidden) { return null}
     const props = this.props
     const buttons = getButtons({ likeState: this.likeState() });
     const WidgetType = components[props.selectedWidget];

@@ -10,7 +10,7 @@ import { loadPhoto,
   addToAlbum,
   rotatePhoto,
   addComment,
-  likePhoto } from '../../../actions/photoCardActions'
+  likePhoto } from '../../../actions/actPhotoCard'
 
 const components = {
   INFO:     Info,

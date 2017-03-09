@@ -3520,6 +3520,10 @@ react-event-listener@^0.4.0:
     react-addons-shallow-compare "^15.4.2"
     warning "^3.0.0"
 
+react-image-lightbox-universal@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/react-image-lightbox-universal/-/react-image-lightbox-universal-0.0.2.tgz#70b2f7ca5812b2984c9ad3913ab9b17970bce7d9"
+
 react-redux@^4.4.5:
   version "4.4.6"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-4.4.6.tgz#4b9d32985307a11096a2dd61561980044fcc6209"

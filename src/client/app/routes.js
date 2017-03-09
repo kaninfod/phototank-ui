@@ -1,18 +1,22 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import Photos from './pages/photos';
-import Login from './components/login';
 import App from './pages/app';
 import Home from './pages/home'
+import Catalogs from './pages/catalogs'
+import Albums from './pages/albums'
 import PhotoCard from './components/card/photo'
 import Bucket from './components/card/bucket'
+import Login from './components/login';
 
 export default (
   <Route path="/" component={App}>
     <IndexRoute component={Home} />
     <Route path="/login" component={Login} />
-    <Route path="/photos" component={Photos} onEnter={requireAuth}>
-    </Route>
+    <Route path="/photos/:context" component={Photos} onEnter={requireAuth}/>
+    <Route path="/albums" component={Albums} onEnter={requireAuth}/>
+    <Route path="/catalogs" component={Catalogs} onEnter={requireAuth}/>
+
   </Route>
 );
 

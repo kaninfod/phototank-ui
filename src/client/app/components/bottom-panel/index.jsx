@@ -1,4 +1,4 @@
-import React, { PropTypes } from 'react'
+import React, { PropTypes } from 'react';
 import '../../stylesheets/panel';
 import Tab from './tab';
 import Content from './content';
@@ -16,9 +16,7 @@ class BottomPanel extends React.Component {
     this.toggleLikedOnly = this.toggleLikedOnly.bind(this);
     this.changeDate = this.changeDate.bind(this);
     this.changeCountry = this.changeCountry.bind(this);
-    this.showBucketDialog = this.showBucketDialog.bind(this);
 
-    // this.handleSearchParams = this.handleSearchParams.bind(this);
     this.state = {
       mainPanel: { open: false },
       searchParams: {
@@ -41,13 +39,7 @@ class BottomPanel extends React.Component {
     var contentName = e.target.dataset.panelid;
     var newState = {};
 
-    newState = {
-      mainPanel: {
-        open: true,
-      },
-      panels: [],
-    };
-
+    newState = { mainPanel: { open: true, }, panels: [], };
     newState.panels = this.state.panels.map(p => {
             if (p.id == contentName) {
               p.active = true;
@@ -64,24 +56,20 @@ class BottomPanel extends React.Component {
     this.setState({ mainPanel: { open: false } });
   }
 
-  showBucketDialog(e) {
-    console.log(e);
-  }
-
   toggleDirection(e) {
-    this.props.updateSearchParams('direction', e.target.checked);
+    this.props.getPhotos('direction', e.target.checked);
   }
 
   toggleLikedOnly(e) {
-    this.props.updateSearchParams('like', e.target.checked);
+    this.props.getPhotos('like', e.target.checked);
   }
 
   changeDate(e, date) {
-    this.props.updateSearchParams('startdate', date);
+    this.props.getPhotos('startdate', date);
   }
 
   changeCountry(e, key, value) {
-    this.props.updateSearchParams('country', value);
+    this.props.getPhotos('country', value);
   }
 
   render () {
@@ -91,7 +79,6 @@ class BottomPanel extends React.Component {
     const mainPanel   = this.state.mainPanel;
 
     return (
-
     <div id="pt-panel" class={'pt-panel ' + (mainPanel.open ? 'open' : '')}>
 
       <div class="pt-panel-tabs">
@@ -101,12 +88,11 @@ class BottomPanel extends React.Component {
       </div>
 
       <div class="pt-panel-contents">
-        <p>{this.props.count}</p>
         <Content data={searchPanel}>
           <SearchPanel
             countries={this.props.countries}
             searchParams={this.props.searchParams}
-            updateSearchParams={this.updateSearchParams}
+            getPhotos={this.getPhotos}
             changeCountry={this.changeCountry}
             changeDate={this.changeDate}
             toggleLikedOnly={this.toggleLikedOnly}
@@ -125,6 +111,5 @@ class BottomPanel extends React.Component {
     </div>);
   }
 }
-
 
 export default BottomPanel;

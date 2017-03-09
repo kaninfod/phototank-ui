@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link, IndexLink } from 'react-router';
 import { connect } from "react-redux";
-import { login, logout } from '../../actions/authActions'
+import { login, logout } from '../../actions/actAuth'
 @connect((store) => {
   return {
     logged_in: store.auth

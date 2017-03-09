@@ -8,16 +8,17 @@ import Header from '../components/common/header';
 
   };
 })
-class Home extends React.Component {
+class Albums extends React.Component {
   render() {
     return (
       <div>
         <h1>
-          <Link to={'/photos'}>Photos</Link>  
+          <Link to={'/photos'}>Albums</Link>
+
         </h1>
       </div>
     );
   }
 }
 
-export default Home;
+export default Albums;

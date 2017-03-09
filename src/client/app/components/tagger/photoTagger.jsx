@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from "react-redux"
 import '../../stylesheets/tagger.css'
-import { loadTags, tagInput, selectSuggestion, addTag, removeTag } from '../../actions/taggerActions'
+import { loadTags, tagInput, selectSuggestion, addTag, removeTag } from '../../actions/actTagger'
 
 
 @connect((store) => {

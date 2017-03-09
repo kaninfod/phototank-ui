@@ -17,9 +17,10 @@ export function getNextPage(params) {
   };
 }
 
-export function updateSearchParams(payload) {
+export function getPhotos(payload) {
+  var photosArray = [];
   return function (dispatch) {
-    if (!!payload.change.length) {
+    if (payload.hasOwnProperty('change')) {
       dispatch({
           type: 'UPDATE_SEARCH_PARAMS',
           payload: payload.change,
@@ -27,9 +28,19 @@ export function updateSearchParams(payload) {
       );
     }
 
-    var searchParams = store.getState().grid.get('searchParams').toJS();
-    return photos(searchParams)
-    .then(response => {
+    if (payload.hasOwnProperty('context')) {
+      if (payload.context == 'catalog') {
+        return null;
+      } else if (payload.context == 'album') {
+        return null;
+      } else if (payload.context == 'location') {
+        return null;
+      } else if (payload.context == 'search') {
+        var searchParams = store.getState().grid.get('searchParams').toJS();
+        photosArray = photos(searchParams);
+      }
+    }
+    photosArray.then(response => {
       dispatch({ type: 'SET_HEADER', payload: response.pagination });
       dispatch({ type: 'LOAD_PHOTOS', payload: response.json });
     });

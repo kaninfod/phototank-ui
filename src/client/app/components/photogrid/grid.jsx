@@ -1,82 +1,87 @@
 import React from 'react';
-import { connect } from "react-redux"
 import '../../stylesheets/grid';
+import Zoombox from './zoombox';
 import Widget from './widget';
 import lazyload from 'jquery-lazyload';
-import AppConstants from '../../constants/constants.js'
-import PhotoCard from '../card/photo'
-import Bucket from '../card/bucket'
-import { loadPhotos, clickPhoto, deletePhoto } from '../../actions/gridActions'
-import { selectPhoto } from '../../actions/bucket'
+import { selectPhoto } from '../../actions/actBucket';
 
-@connect((store) => {
-  return {
-    // photos:store.grid.get('photos').toJS(),
-    // params: store.grid.get('params').toJS(),
-    last_page: store.grid.getIn(['pagination', 'last_page']),
-    loading: store.grid.get('loading'),
-    selectedPhoto: store.grid.get('selectedPhoto'),
-  };
-})
 export default class Grid extends React.Component {
   constructor(props) {
     super(props);
-    this.handleClick = this.handleClick.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleSelect = this.handleSelect.bind(this);
+    this.showZoombox = this.showZoombox.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
-    this.loading = true
+    this.hideZoombox = this.hideZoombox.bind(this);
+    this.loading = true;
+    this.state = {
+      zoomboxOpen: false,
+    };
   }
 
   componentDidUpdate(prevProps, prevState) {
-    window.addEventListener('scroll', function(event) {
-        this.handleScroll(event)
-    }.bind(this));
-    $('.lazy').lazyload()
+    window.addEventListener('scroll', function (event) {
+        this.handleScroll(event);
+      }.bind(this));
+    $('.lazy').lazyload();
   }
 
-  handleSelect(photoId) {
-    this.props.dispatch(selectPhoto(photoId))
+  hideZoombox() {
+    this.setState({ zoomboxOpen: false });
   }
 
-  handleDelete(photoId) {
-    this.props.dispatch(deletePhoto(photoId))
-  }
-
-  handleClick(photoId) {
-    this.props.dispatch(clickPhoto(photoId))
+  showZoombox(photoId) {
+    var index = this.props.photos.findIndex(obj => {
+      return obj.get('id') === photoId;
+    });
+    this.setState({ zoomPhotoId: photoId, zoomboxOpen: true, index: index });
   }
 
   handleScroll(event) {
-
-    var scrollPosition = $('.loadMore').offset().top  - ($(window).height() + $(window).scrollTop() + this.props.offset)
-    if (scrollPosition < 0 && this.loading && !this.props.last_page) {
-      this.loading = false
-      this.props.onNextPage()
+    var scrollPosition = $('.loadMore').offset().top
+                          - ($(window).height()
+                          + $(window).scrollTop()
+                          + this.props.offset);
+    if (scrollPosition < 0 && this.loading && !this.props.lastPage) {
+      this.loading = false;
+      this.props.photoActions.SCROLL();
     }
   }
 
   render() {
+    const props = this.props;
+    const actions = props.photoActions;
     return (
       <div className="photos-component">
+        <Zoombox
+          photos={this.props.photos}
+          photoId={this.state.zoomPhotoId}
+          isOpen={this.state.zoomboxOpen}
+          index={this.state.index}
+          hideZoombox={this.hideZoombox}
+          />
+
         <div className="row photogrid" onScroll={this.handleScroll}>
-          {this.props.photos.map(function(photo, i){
-            return <Widget key={photo.id} photo={photo} handleClick={this.handleClick}
-              handleSelect={this.handleSelect} handleDelete={this.handleDelete}/>
-          }.bind(this))}
+          {props.photos.map(photo => {
+            return <Widget
+              key={photo.get('id')}
+              photo={photo}
+              handleClick={actions.CLICK}
+              handleSelect={actions.SELECT}
+              handleDelete={actions.DELETE}
+              showZoombox={this.showZoombox}/>;
+          })}
         </div>
         <div className="row loadMore"></div>
         <div>
-          { this.props.children }
+          { props.children }
         </div>
-        {this.loading = this.props.loading}
+        {this.loading = props.loading}
       </div>
-      );
+    );
   }
 }
 
 Grid.defaultProps = {
   photos: [],
   offset: 600,
-  nextPage: "/api/photos.json?page=1",
+
 };
