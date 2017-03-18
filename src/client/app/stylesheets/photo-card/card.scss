@@ -17,6 +17,9 @@
 .pt-card {
   max-width: 300px;
   display: inline-block;
+  background-color: white;
+
+
 
   @import 'widget';
   @import 'buttons';
@@ -24,19 +27,6 @@
 
 
 
-
-
-
-
-
-
-
-
-// .card-title {
-//   font-size: 1.0rem;
-//   line-height: 1.6rem;
-//   font-weight: 400;
-// }
 
 .pt-comments {
   position: relative;

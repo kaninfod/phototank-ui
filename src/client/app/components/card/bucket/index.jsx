@@ -1,7 +1,7 @@
 import '../../../stylesheets/photo-card/card.scss';
 import '../../../stylesheets/bucket';
 import React from 'react';
-import { connect } from "react-redux"
+import { connect } from 'react-redux'
 import AppConstants from '../../../constants/constants';
 import Draggable, { DraggableCore } from 'react-draggable';
 import { getButtons } from './bucket-button.props';
@@ -102,7 +102,7 @@ export default class Bucket extends React.Component {
 
     return (
       <Draggable handle=".header">
-        <div className="card pt-card upper-right show">
+        <div className="pt-card upper-right show">
             <WidgetType data={this.props.data} widgetHandlers={widgetHandlers}/>
             <Buttons buttons={buttons}
               widget={this.props.selectedWidget}

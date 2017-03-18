@@ -34,9 +34,7 @@ export default class Comment extends React.Component {
                 <img className="circle responsive-img" src={avatar}/>
               </div>
             </div>
-
             {comments.slice().reverse().map(comment.bind(this))}
-
           </div>
         </div>
       </div>

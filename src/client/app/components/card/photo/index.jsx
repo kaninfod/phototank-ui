@@ -122,7 +122,7 @@ export default class PhotoCard extends React.Component {
 
     return (
       <Draggable handle=".header">
-        <div className="card pt-card upper-right show">
+        <div className="pt-card upper-right show">
           <WidgetType data={props.cardData} widgetHandlers={widgetHandlers}/>
           <Buttons buttons={buttons}
             widget={props.selectedWidget}
