@@ -1,5 +1,6 @@
 import stateTypes from '../constants/stateTypes';
 import { photos, photoDelete } from '../api/apiPhotos';
+import { catalogsPhotos } from '../api/apiCatalogs';
 import { bucketToggle } from '../api/apiBucket';
 import { locationCountries } from '../api/apiLocations';
 import store from '../store';
@@ -30,12 +31,13 @@ export function getPhotos(payload) {
 
     if (payload.hasOwnProperty('context')) {
       if (payload.context == 'catalog') {
-        return null;
+        console.log('PAGE:',payload.searchParams.page);
+        photosArray = catalogsPhotos(payload.contextId, payload.searchParams.page)
       } else if (payload.context == 'album') {
         return null;
       } else if (payload.context == 'location') {
         return null;
-      } else if (payload.context == 'search') {
+      } else {
         var searchParams = store.getState().grid.get('searchParams').toJS();
         photosArray = photos(searchParams);
       }

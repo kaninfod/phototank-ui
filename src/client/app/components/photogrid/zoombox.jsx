@@ -39,9 +39,9 @@ export default class Zoombox extends React.Component {
 
       return (
         <Lightbox
-          mainSrc={currentPhoto.get('url_org').concat('?token=', sessionStorage.jwt)}
-          nextSrc={nextPhoto.get('url_org').concat('?token=', sessionStorage.jwt)}
-          prevSrc={prevPhoto.get('url_org').concat('?token=', sessionStorage.jwt)}
+          mainSrc={currentPhoto.get('url_lg').concat('?token=', sessionStorage.jwt)}
+          nextSrc={nextPhoto.get('url_lg').concat('?token=', sessionStorage.jwt)}
+          prevSrc={prevPhoto.get('url_lg').concat('?token=', sessionStorage.jwt)}
           nextSrcThumbnail={nextPhoto.get('url').concat('?token=', sessionStorage.jwt)}
           prevSrcThumbnail={prevPhoto.get('url').concat('?token=', sessionStorage.jwt)}
 

@@ -1,4 +1,4 @@
-import { headers } from './apiUtils';
+import { headers, toQueryString } from './apiUtils';
 
 export function catalogs() {
   var url = '/api/catalogs.json';
@@ -63,8 +63,8 @@ export function catalogsUpdate(payload) {
     });
 }
 
-export function catalogsImport(payload) {
-  var url = '/api/catalogs/'.concat(payload.id, '/import');
+export function catalogsImport(catalogId) {
+  var url = '/api/catalogs/'.concat(catalogId, '/import');
 
   var request = new Request(url,  {
     headers: headers,
@@ -73,6 +73,21 @@ export function catalogsImport(payload) {
   return fetch(request)
     .then(response => {
       return response.json();
+    }).catch(err => {
+      return err;
+    });
+}
+
+export function catalogsPhotos(id, page) {
+  var url = '/api/catalogs/'.concat(id, '/photos.json?page=', page);
+
+  var request = new Request(url,  {
+    headers: headers,
+    method: 'GET',
+  });
+  return fetch(request)
+    .then(response => {
+      return { json: response.json(), pagination: response.headers };
     }).catch(err => {
       return err;
     });

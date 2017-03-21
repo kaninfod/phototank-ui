@@ -3,6 +3,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import {Link} from 'react-router'
 
 class Catalog extends React.Component {
   constructor(props) {
@@ -36,7 +37,11 @@ class Catalog extends React.Component {
                 iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
                 anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
                 targetOrigin={{ horizontal: 'right', vertical: 'top' }}>
-                <MenuItem primaryText="View photos" />
+                <MenuItem>
+                  <Link to={'/photos/catalog/'.concat(1)} style={{ textDecoration: 'none' }}>
+                    View photos
+                  </Link>
+                </MenuItem>
                 <MenuItem primaryText="Edit" onClick={this.edit}/>
                 <MenuItem primaryText="Jobs" />
                 <MenuItem primaryText="Update" onClick={this.importToCatalog}/>

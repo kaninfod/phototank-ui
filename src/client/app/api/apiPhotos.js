@@ -1,9 +1,9 @@
 import { headers, toQueryString } from './apiUtils';
 
 export function photos(params) {
-  var url = '/api/photos.json?';
+  var url = '/api/photos.json';
   params = toQueryString(params);
-  url = url.concat('&', params);
+  url = url.concat('?', params);
 
   var request = new Request(url,  {
     headers: headers,

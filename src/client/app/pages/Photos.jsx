@@ -41,7 +41,8 @@ class Photos extends React.Component {
   componentWillMount() {
     this.props.dispatch(getCountries());
     this.props.dispatch(getPhotos({
-      context:this.props.params.context,
+      context: this.props.params.context,
+      contextId: this.props.params.id,
       change: [],
       searchParams: this.props.searchParams
     }));
@@ -58,19 +59,24 @@ class Photos extends React.Component {
   handleInfiniteScroll() {
     this.props.dispatch(getPhotos({
       context:this.props.params.context,
+      contextId: this.props.params.id,
       searchParams: this.props.searchParams
     }));
   }
 
   getPhotos(key, value) {
-    this.props.dispatch(getPhotos({
-      change: [
-        { key: key, value: value},
-        { key: 'page', value: 1},
-      ],
-      context:this.props.params.context,
-      searchParams: this.props.searchParams
-    }));
+    this.props.dispatch(
+      getPhotos(
+        {
+          change: [
+            { key: key, value: value},
+            { key: 'page', value: 1},
+          ],
+          context:this.props.params.context,
+          searchParams: this.props.searchParams
+        }
+      )
+    );
   }
 
   handleSelect(photoId) {
@@ -125,16 +131,16 @@ class Photos extends React.Component {
   }
 }
 
-function getSearchParams(props) {
-  var params = {
-    page: props.page,
-    startdate: props.startdate,
-    country: props.country,
-    like: props.like,
-    tags: props.tags,
-    direction: props.direction,
-  }
-  return params;
-}
+// function getSearchParams(props) {
+//   var params = {
+//     page: props.page,
+//     startdate: props.startdate,
+//     country: props.country,
+//     like: props.like,
+//     tags: props.tags,
+//     direction: props.direction,
+//   }
+//   return params;
+// }
 
 export default Photos;

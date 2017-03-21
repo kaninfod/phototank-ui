@@ -13,7 +13,8 @@ export default (
   <Route path="/" component={App}>
     <IndexRoute component={Home} />
     <Route path="/login" component={Login} />
-    <Route path="/photos/:context" component={Photos} onEnter={requireAuth}/>
+    <Route exact={true} path="/photos" component={Photos} onEnter={requireAuth}/>
+    <Route path="/photos/:context/:id" component={Photos} onEnter={requireAuth}/>
     <Route path="/albums" component={Albums} onEnter={requireAuth}/>
     <Route path="/catalogs" component={Catalogs} onEnter={requireAuth}/>
 

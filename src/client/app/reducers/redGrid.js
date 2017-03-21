@@ -96,7 +96,6 @@ export default function reducer(state = initialState, action) {
           var cut = state.get('photos').takeLast(200);
           state = state.set('photos', cut)
         }
-
         console.log('COUNT', state.get('photos').count());
       }
 
