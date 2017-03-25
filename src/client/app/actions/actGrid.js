@@ -5,41 +5,18 @@ import { bucketToggle } from '../api/apiBucket';
 import { locationCountries } from '../api/apiLocations';
 import store from '../store';
 
-export function getNextPage(params) {
-  return function (dispatch) {
-    dispatch({ type: 'LOAD_PHOTOS_PENDING', payload: {} });
-    return photos(params)
-    .then(response => {
-      dispatch({ type: 'LOAD_PHOTOS_FULFILLED', payload: response });
-    })
-    .catch(error => {
-      throw(error);
-    });
-  };
-}
-
 export function getPhotos(payload) {
   var photosArray = [];
   return function (dispatch) {
-    if (payload.hasOwnProperty('change')) {
-      dispatch({
-          type: 'UPDATE_SEARCH_PARAMS',
-          payload: payload.change,
-        }
-      );
-    }
-
     if (payload.hasOwnProperty('context')) {
       if (payload.context == 'catalog') {
-        console.log('PAGE:',payload.searchParams.page);
-        photosArray = catalogsPhotos(payload.contextId, payload.searchParams.page)
+        photosArray = catalogsPhotos(payload.contextId, payload.page)
       } else if (payload.context == 'album') {
         return null;
       } else if (payload.context == 'location') {
         return null;
       } else {
-        var searchParams = store.getState().grid.get('searchParams').toJS();
-        photosArray = photos(searchParams);
+        photosArray = photos(payload.searchParams, payload.page);
       }
     }
     photosArray.then(response => {

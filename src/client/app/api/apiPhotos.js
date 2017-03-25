@@ -1,10 +1,9 @@
 import { headers, toQueryString } from './apiUtils';
 
-export function photos(params) {
+export function photos(params, page) {
   var url = '/api/photos.json';
   params = toQueryString(params);
-  url = url.concat('?', params);
-
+  url = url.concat('?', params, '&page=', page);
   var request = new Request(url,  {
     headers: headers,
     method: 'GET',

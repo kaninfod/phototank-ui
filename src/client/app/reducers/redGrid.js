@@ -16,27 +16,12 @@ var init = {
     out_of_bounds: false,
     offset: 0,
   },
-  searchParams: {
-    page: 1,
-    startdate: new Date('2017-03-10'),
-    country: 'All',
-    direction: false,
-    like: false,
-    tags: [],
-  },
 };
 
 const initialState = Map(fromJS(init));
 
 export default function reducer(state = initialState, action) {
   switch (action.type) {
-
-    case stateTypes.UPDATE_SEARCH_PARAMS: {
-      action.payload.map(change => {
-          state = state.setIn(['searchParams', change.key], change.value);
-        });
-      return state;
-    }
 
     case stateTypes.CLICK_PHOTO: {
       return state.set('selectedPhoto', action.payload.selectedPhoto);
@@ -72,14 +57,12 @@ export default function reducer(state = initialState, action) {
         .setIn(['pagination', 'last_page'], pagination.last_page)
         .setIn(['pagination', 'previous_page'], pagination.previous_page)
         .setIn(['pagination', 'next_page'], pagination.next_page)
-        .setIn(['searchParams', 'page'], pagination.next_page)
         .setIn(['pagination', 'out_of_bounds'], pagination.out_of_bounds)
         .setIn(['pagination', 'offset'], pagination.offset);
       return state;
     }
 
     case stateTypes.LOAD_PHOTOS_FULFILLED: {
-
       if (state.getIn(['pagination', 'out_of_bounds'])) {
         console.log('FUCK OFF');
         return state;
@@ -109,16 +92,3 @@ export default function reducer(state = initialState, action) {
   }
   return state;
 }
-
-//TODO move to utils file
-
-// function extractSearchParams(html) {
-//   if (html === null) {return false }
-//   var div = document.createElement('div');
-//   div.innerHTML = html;
-//   var urlString = div.getElementsByClassName('next_page')[0].getAttribute('href');
-//   if (urlString === null) {return false }
-//   var url = new URL('http:/'.concat(urlString));
-//   var searchParams = new URLSearchParams(url.search);
-//   return searchParams;
-// }

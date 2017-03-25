@@ -57,19 +57,19 @@ class BottomPanel extends React.Component {
   }
 
   toggleDirection(e) {
-    this.props.getPhotos('direction', e.target.checked);
+    this.props.changeSearchParams('direction', e.target.checked);
   }
 
   toggleLikedOnly(e) {
-    this.props.getPhotos('like', e.target.checked);
+    this.props.changeSearchParams('like', e.target.checked);
   }
 
   changeDate(e, date) {
-    this.props.getPhotos('startdate', date);
+    this.props.changeSearchParams('startdate', date);
   }
 
   changeCountry(e, key, value) {
-    this.props.getPhotos('country', value);
+    this.props.changeSearchParams('country', value);
   }
 
   render () {
@@ -92,7 +92,6 @@ class BottomPanel extends React.Component {
           <SearchPanel
             countries={this.props.countries}
             searchParams={this.props.searchParams}
-            getPhotos={this.getPhotos}
             changeCountry={this.changeCountry}
             changeDate={this.changeDate}
             toggleLikedOnly={this.toggleLikedOnly}
