@@ -4,11 +4,11 @@ import Grid from '../components/photogrid/grid';
 import PhotoCard from '../components/card/photo';
 import Bucket from '../components/card/bucket';
 import BottomPanel from '../components/bottom-panel';
+import Zoombox from '../components/photogrid/zoombox';
 import { selectPhoto } from '../actions/actBucket';
 import { loadPhotos,
   clickPhoto,
   deletePhoto,
-  getNextPage,
   getPhotos,
   getCountries } from '../actions/actGrid'
 
@@ -17,24 +17,36 @@ import { loadPhotos,
     selectedPhoto: store.grid.get('selectedPhoto'),
     loading: store.grid.get('loading'),
     lastPage: store.grid.getIn(['pagination', 'last_page']),
+    page: store.grid.getIn(['pagination', 'next_page']),
     photos: store.grid.get('photos'),
     countries: store.grid.get('countries').toJS(),
     photosBucket: store.bucket.getIn(['data', 'bucket']).toJS(),
-    searchParams: store.grid.get('searchParams').toJS(),
   };
 })
 class Photos extends React.Component {
   constructor(props) {
     super(props);
-    this.hideBucket = this.hideBucket.bind(this);
+    this.hideBucket           = this.hideBucket.bind(this);
+    this.removeBucketPhoto    = this.removeBucketPhoto.bind(this);
+    this.changeSearchParams   = this.changeSearchParams.bind(this)
     this.handleInfiniteScroll = this.handleInfiniteScroll.bind(this);
-    this.removeBucketPhoto = this.removeBucketPhoto.bind(this);
-    this.getPhotos = this.getPhotos.bind(this)
-    this.handleClick = this.handleClick.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
-    this.handleSelect = this.handleSelect.bind(this);
+    this.handleClick          = this.handleClick.bind(this);
+    this.handleDelete         = this.handleDelete.bind(this);
+    this.handleSelect         = this.handleSelect.bind(this);
+    this.showZoombox          = this.showZoombox.bind(this);
+    this.hideZoombox          = this.hideZoombox.bind(this);
+    this.updateGrid = false;
     this.state = {
       hidden: true,
+      zoomboxOpen: false,
+      zoomboxIndex: 0,
+      searchParams: {
+        startdate: new Date('2017-03-10'),
+        country: 'All',
+        direction: false,
+        like: false,
+        tags: [],
+      },
     };
   };
 
@@ -43,9 +55,20 @@ class Photos extends React.Component {
     this.props.dispatch(getPhotos({
       context: this.props.params.context,
       contextId: this.props.params.id,
-      change: [],
-      searchParams: this.props.searchParams
+      searchParams: this.state.searchParams,
+      page: this.props.page,
     }));
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (this.updateGrid) {
+      this.updateGrid = false;
+      this.props.dispatch(getPhotos({
+        context:this.props.params.context,
+        searchParams: this.state.searchParams,
+        page: this.props.page,
+      }))
+    }
   }
 
   hideBucket() {
@@ -60,23 +83,16 @@ class Photos extends React.Component {
     this.props.dispatch(getPhotos({
       context:this.props.params.context,
       contextId: this.props.params.id,
-      searchParams: this.props.searchParams
+      searchParams: this.state.searchParams,
+      page: this.props.page,
     }));
   }
 
-  getPhotos(key, value) {
-    this.props.dispatch(
-      getPhotos(
-        {
-          change: [
-            { key: key, value: value},
-            { key: 'page', value: 1},
-          ],
-          context:this.props.params.context,
-          searchParams: this.props.searchParams
-        }
-      )
-    );
+  changeSearchParams(key, value) {
+    var state = this.state
+    state['searchParams'][key] = value
+    this.updateGrid = true
+    this.setState(state)
   }
 
   handleSelect(photoId) {
@@ -91,20 +107,30 @@ class Photos extends React.Component {
     this.props.dispatch(clickPhoto(photoId))
   }
 
+  showZoombox(photoId) {
+    var index = this.props.photos.findIndex(obj => {
+      return obj.get('id') === photoId;
+    });
+    this.setState({ zoomPhotoId: photoId, zoomboxOpen: true, zoomboxIndex: index });
+  }
+
+  hideZoombox() {
+    this.setState({ zoomboxOpen: false });
+  }
   render () {
-    var searchParams = this.props.searchParams
+    var searchParams = this.state.searchParams
 
     const photoActions = {
       DELETE: this.handleDelete,
       SELECT: this.handleSelect,
       CLICK:  this.handleClick ,
+      ZOOM:   this.showZoombox,
       SCROLL: this.handleInfiniteScroll,
     }
 
     return (
       <div>
         <Grid
-          type="freeform"
           searchParams={searchParams}
           photos={this.props.photos}
           lastPage={this.props.lastPage}
@@ -120,10 +146,17 @@ class Photos extends React.Component {
             photos={this.props.photosBucket}
             countries={this.props.countries}
             searchParams={searchParams}
-            getPhotos={this.getPhotos}
+            changeSearchParams={this.changeSearchParams}
             onRemovePhoto={this.removeBucketPhoto}
             onShowBucket={this.hideBucket}
           />
+          <Zoombox
+            photoId={this.state.zoomPhotoId}
+            isOpen={this.state.zoomboxOpen}
+            index={this.state.zoomboxIndex}
+            photos={this.props.photos}
+            hideZoombox={this.hideZoombox}
+            />
         </Grid>
 
       </div>
@@ -131,16 +164,8 @@ class Photos extends React.Component {
   }
 }
 
-// function getSearchParams(props) {
-//   var params = {
-//     page: props.page,
-//     startdate: props.startdate,
-//     country: props.country,
-//     like: props.like,
-//     tags: props.tags,
-//     direction: props.direction,
-//   }
-//   return params;
-// }
+Photos.defaultProps = {
+  page: 1,
+};
 
 export default Photos;
