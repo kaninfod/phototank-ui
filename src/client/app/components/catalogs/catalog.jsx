@@ -3,7 +3,7 @@ import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import {Link} from 'react-router'
+import { Link } from 'react-router-dom';
 
 class Catalog extends React.Component {
   constructor(props) {
@@ -16,11 +16,11 @@ class Catalog extends React.Component {
   }
 
   edit() {
-    this.props.openEdit(this.props.catalog)
+    this.props.openEdit(this.props.catalog);
   }
 
   importToCatalog() {
-    this.props.importToCatalog(this.props.catalog)
+    this.props.importToCatalog(this.props.catalog);
   }
 
   render () {
@@ -38,7 +38,9 @@ class Catalog extends React.Component {
                 anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
                 targetOrigin={{ horizontal: 'right', vertical: 'top' }}>
                 <MenuItem>
-                  <Link to={'/photos/catalog/'.concat(1)} style={{ textDecoration: 'none' }}>
+                  <Link
+                    to={'/catalog/'.concat(this.props.catalog.get('id'), '/photos')}
+                    style={{ textDecoration: 'none' }}>
                     View photos
                   </Link>
                 </MenuItem>
@@ -51,8 +53,8 @@ class Catalog extends React.Component {
           </div>
 
       </div>
-    )
+    );
   }
 }
 
-export default Catalog
+export default Catalog; 

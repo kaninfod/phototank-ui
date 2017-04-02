@@ -64,21 +64,22 @@ export default function reducer(state = initialState, action) {
 
     case stateTypes.LOAD_PHOTOS_FULFILLED: {
       if (state.getIn(['pagination', 'out_of_bounds'])) {
-        console.log('FUCK OFF');
+        console.log('NO_MORE_PAGES');
         return state;
       }
 
       if (state.getIn(['pagination', 'first_page'])) {
-        console.log('NEW GO');
         state = state.set('photos', fromJS(action.payload.photos));
+        console.log('NEW GO', state.get('photos').size);
       } else {
         console.log('ADD_TO');
         state = state.set('photos', state.get('photos').concat(fromJS(action.payload.photos)));
         console.log('COUNT', state.get('photos').count());
         if (state.get('photos').count() > 200) {
-          var cut = state.get('photos').takeLast(200);
-          state = state.set('photos', cut)
+          var cut = state.get('photos')//.takeLast(200);
+          state = state.set('photos', cut);
         }
+
         console.log('COUNT', state.get('photos').count());
       }
 
@@ -89,6 +90,11 @@ export default function reducer(state = initialState, action) {
     case stateTypes.LOAD_COUNTRIES_FULFILLED: {
       return state.set('countries', fromJS(action.payload.countries));
     }
+
+    case stateTypes.RESET_GRID: {
+      return state.set('photos', fromJS([]));
+    }
+
   }
   return state;
 }

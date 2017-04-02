@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from "react-redux";
-import {Link} from 'react-router';
+import { Link } from 'react-router';
 import Header from '../components/common/header';
 
 @connect((store) => {
@@ -13,7 +13,7 @@ class Home extends React.Component {
     return (
       <div>
         <h1>
-          <Link to={'/photos'}>Photos</Link>  
+          <Link to={'/photos'}>Photos</Link>
         </h1>
       </div>
     );
