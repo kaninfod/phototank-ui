@@ -43,7 +43,8 @@ export function photoDelete(photoId) {
 }
 
 export function photoRotate(payload) {
-  var url = '/api/photos/'.concat(payload.photoId, '/rotate/', payload.rotateAngle);
+  console.log(payload);
+  var url = '/api/photos/'.concat(payload.photoId, '/rotate/', payload.rotation);
   return function (dispatch) {
     var request = new Request(url, { headers: headers, method: 'GET' });
     fetch(request)

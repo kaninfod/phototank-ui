@@ -20,7 +20,6 @@ export default function reducer(state = initialState, action) {
     }
 
     case stateTypes.LOG_OUT: {
-      console.log('AUTH LOGOUT', history);
       history.push('/login');
       return !!sessionStorage.jwt;
     }

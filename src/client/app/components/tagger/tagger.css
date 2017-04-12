@@ -2,7 +2,7 @@
 
 
 .tagger {
-  border-bottom: 1px solid #9e9e9e;
+  border-bottom: 0px solid #9e9e9e;
 }
 
 .tagger > .added-tags {
@@ -33,7 +33,7 @@
 .tagger > input {
   display: inline-block;
   border: none !important;
-  margin-bottom: 0;
+  margin: 0;
   width: 100%;
 }
 
@@ -41,7 +41,7 @@
   float: left;
   position: absolute;
   z-index: 10;
-  margin-top: 1px;
+  margin-top: -8px;
   min-width: 180px;
   display: block;
   max-height: 210px;

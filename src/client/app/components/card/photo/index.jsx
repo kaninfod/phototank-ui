@@ -4,7 +4,7 @@ import AppConstants from '../../../constants/constants.js'
 import Draggable, {DraggableCore} from 'react-draggable';
 import {getButtons} from './button.props.js'
 import { Buttons, Info, Rotate, Albums, Comments, Tag, Map } from '../widgets'
-import '../../../stylesheets/photo-card/card.scss'
+import '../styles/card.scss'
 import { loadPhoto,
   setWidget,
   addToAlbum,

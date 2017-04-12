@@ -2,8 +2,6 @@ import React, { PropTypes } from 'react';
 import '../../stylesheets/panel';
 import Tab from './tab';
 import Content from './content';
-import Buttons from '../card/widgets/buttons';
-import { getButtons } from './bucket-button.props';
 import SearchPanel from './searchPanel';
 import BucketPanel from './bucketPanel';
 

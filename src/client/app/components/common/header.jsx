@@ -26,7 +26,6 @@ class Header extends React.Component {
   logout(event) {
     event.preventDefault();
     this.props.dispatch(logout())
-
   }
 
 

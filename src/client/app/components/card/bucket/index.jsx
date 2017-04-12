@@ -1,4 +1,4 @@
-import '../../../stylesheets/photo-card/card.scss';
+import '../styles/card.scss';
 import '../../../stylesheets/bucket';
 import React from 'react';
 import { connect } from 'react-redux'

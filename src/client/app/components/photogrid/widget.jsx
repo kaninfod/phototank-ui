@@ -8,7 +8,6 @@ export default class Widget extends React.Component {
     this.handleSelect = this.handleSelect.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.handleZoom = this.handleZoom.bind(this);
-
   }
 
   handleHover(e) {
@@ -20,21 +19,20 @@ export default class Widget extends React.Component {
   }
 
   handleSelect(e) {
-    this.props.handleSelect(this.props.photo.get('id'));
+    this.props.actions.SELECT(this.props.photo.get('id'));
   }
 
   handleZoom(e) {
-    console.log('FROM HERE WIDGET');
-    this.props.showZoombox(this.props.photo.get('id'));
+    this.props.actions.ZOOM(this.props.photo.get('id'));
   }
 
   handleDelete(e) {
-    this.props.handleDelete(this.props.photo.get('id'));
+    this.props.actions.DELETE(this.props.photo.get('id'));
   }
 
   handleClick(e) {
 
-    this.props.handleClick(this.props.photo.get('id'));
+    this.props.actions.CLICK(this.props.photo.get('id'));
   }
 
   render() {
