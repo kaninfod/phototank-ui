@@ -12,8 +12,8 @@ export default class Grid extends React.Component {
 
     };
   }
+
   componentWillUnmount() {
-    console.log('*OFFLOAD');
     window.removeEventListener('scroll', function (event) {
         this.handleScroll(event);
       }.bind(this));
@@ -37,14 +37,14 @@ export default class Grid extends React.Component {
         this.props.photoActions.SCROLL();
       }
     }
-    catch(err) {
-      console.log(err); 
+
+    catch (err) {
+      console.log(err);
     }
   }
 
   render() {
     const props = this.props;
-    const actions = props.photoActions;
     return (
       <div className="photos-component">
         <div className="row photogrid" onScroll={this.handleScroll}>
@@ -52,10 +52,7 @@ export default class Grid extends React.Component {
             return <Widget
               key={photo.get('id')}
               photo={photo}
-              handleClick={actions.CLICK}
-              handleSelect={actions.SELECT}
-              handleDelete={actions.DELETE}
-              showZoombox={actions.ZOOM}/>;
+              actions={props.photoActions}/>;
               }
             )
           }

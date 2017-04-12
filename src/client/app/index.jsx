@@ -24,15 +24,6 @@ injectTapEventPlugin();
 const app = document.getElementById('app');
 const history = createBrowserHistory();
 
-// function requireAuth(nextState, replace) {
-//   if (!sessionStorage.jwt) {
-//     replace({
-//       pathname: '/login',
-//       state: { nextPathname: nextState.location.pathname },
-//     });
-//   }
-// }
-
 const PrivateRoute = ({ component, ...rest }) => (
   <Route {...rest} render={props => (
     !!sessionStorage.jwt ? (

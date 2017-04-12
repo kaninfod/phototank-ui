@@ -19,20 +19,24 @@ export function loadTags(photoId) {
 }
 
 export function tagInput(tagInput) {
-  var url = '/api/photos/get_tag_list?term='.concat(tagInput);
-  return function (dispatch) {
-    var request = new Request(url, { headers: headers, method: 'GET' });
-    fetch(request)
-      .then(response => {
-        dispatch({ type: 'TAG_INPUT', payload: response.json() });
-      })
-      .catch((err) => {
-        dispatch({ type: 'TAG_INPUT_ERROR', payload: err });
-      })
-      .then(() => {
-        dispatch({ type: 'TAG_INPUT_VALUE', payload: tagInput });
-      });
-  };
+  if (tagInput.length < 2) {
+    return { type: 'TAG_INPUT_VALUE', payload: tagInput };
+  } else {
+    var url = '/api/photos/get_tag_list?term='.concat(tagInput);
+    return function (dispatch) {
+      var request = new Request(url, { headers: headers, method: 'GET' });
+      fetch(request)
+        .then(response => {
+          dispatch({ type: 'TAG_INPUT', payload: response.json() });
+        })
+        .catch((err) => {
+          dispatch({ type: 'TAG_INPUT_ERROR', payload: err });
+        })
+        .then(() => {
+          dispatch({ type: 'TAG_INPUT_VALUE', payload: tagInput });
+        });
+    };
+  }
 }
 
 export function selectSuggestion(payload) {

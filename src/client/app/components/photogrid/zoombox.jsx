@@ -1,3 +1,4 @@
+// Alternative: https://jossmac.github.io/react-images/
 import Lightbox from 'react-image-lightbox-universal';
 import 'react-image-lightbox-universal/dist/umd/bundle.min.css';
 import React from 'react';
@@ -39,6 +40,7 @@ export default class Zoombox extends React.Component {
 
       return (
         <Lightbox
+          style="z-index: 2000;"
           mainSrc={currentPhoto.get('url_lg').concat('?token=', sessionStorage.jwt)}
           nextSrc={nextPhoto.get('url_lg').concat('?token=', sessionStorage.jwt)}
           prevSrc={prevPhoto.get('url_lg').concat('?token=', sessionStorage.jwt)}

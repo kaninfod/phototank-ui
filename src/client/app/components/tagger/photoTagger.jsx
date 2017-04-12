@@ -1,8 +1,8 @@
-import React from 'react'
-import { connect } from "react-redux"
-import '../../stylesheets/tagger.css'
-import { loadTags, tagInput, selectSuggestion, addTag, removeTag } from '../../actions/actTagger'
-
+import React from 'react';
+import { connect } from 'react-redux';
+import './tagger.css';
+import { loadTags, tagInput, selectSuggestion, addTag, removeTag } from '../../actions/actTagger';
+import TextField from 'material-ui/TextField';
 
 @connect((store) => {
   return {
@@ -47,6 +47,7 @@ export default class PhotoTagger extends React.Component {
   }
 
   handleKeyDown(e) {
+
     //Are there items in list
     var _items = function() {
       if (suggestions) return _select_item()
@@ -106,6 +107,9 @@ export default class PhotoTagger extends React.Component {
     var input = this.props.inputValue
     var suggestions = this.props.suggestions
     var current = this.props.selectedSuggestion
+
+    if (![13,27,38,40].includes(key)) {return null}
+
     var k = _items()
 
     this.props.dispatch(selectSuggestion({ selectedSuggestion: k}))
@@ -114,13 +118,21 @@ export default class PhotoTagger extends React.Component {
   render() {
     const tags = this.props.tags
     const suggestions = this.props.suggestions
+
     return (
       <div className="tagger">
-        <input className="tag-input" onKeyDown={this.handleKeyDown}
-          value={this.props.inputValue} onChange={this.tagInput}/>
+        <TextField
+          floatingLabelText="Enter tag"
+          onKeyDown={this.handleKeyDown}
+          value={this.props.inputValue}
+          onChange={this.tagInput}
+          />
 
-        <SuggestionsPane suggestions={suggestions}
-          selected={this.props.selectedSuggestion}/>
+
+        <SuggestionsPane
+          suggestions={suggestions}
+          selected={this.props.selectedSuggestion}
+          />
 
       <div className="added-tags">
           {tags.map(tag.bind(this))}
@@ -142,7 +154,7 @@ var tag = function(props){
 
 var SuggestionsPane = function(props) {
   var suggestions = props.suggestions
-  if (props.suggestions.length == 0) { return null }
+  if (props.suggestions.size == 0) { return null }
 
   var selected = (props.selected) ? props.selected.id : null
   var suggestions = suggestions.map(alter(selected))

@@ -11,46 +11,47 @@ var init = {
 const initialState = Map(fromJS(init));
 
 export default function reducer(state = initialState, action) {
+  var newState;
   switch (action.type) {
     case 'FETCH_TAGS_FULFILLED': {
       return state.set('tags', action.payload);
     }
 
     case 'TAG_INPUT_FULFILLED': {
-      var newState = state
+      newState = state
         .set('suggestions', action.payload);
       return newState;
     }
 
     case 'TAG_INPUT_VALUE': {
-      var newState = state
+      newState = state
         .set('inputValue', action.payload);
       return newState;
     }
 
     case 'SELECT_SUGGESTION_SET': {
-      var newState = state
+      newState = state
         .set('selectedSuggestion', action.payload.selectedSuggestion)
         .set('inputValue', action.payload.selectedSuggestion.name);
       return newState;
     }
 
     case 'SELECT_SUGGESTION_UNSET': {
-      var newState = state
+      newState = state
         .set('selectedSuggestion', null)
         .set('suggestions', []);
       return newState;
     }
 
     case 'ADD_TAG_FULFILLED': {
-      var newState = state
+      newState = state
         .set('tags', action.payload.tags)
         .set('inputValue', '');
       return newState;
     }
 
     case 'REMOVE_TAG_FULFILLED': {
-      var newState = state
+      newState = state
         .set('tags', action.payload.tags);
       return newState;
     }
