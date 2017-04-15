@@ -8,11 +8,8 @@ export function catalogs() {
     method: 'GET',
   });
   return fetch(request)
-    .then(response => {
-      return response.json();
-    }).catch(err => {
-      return err;
-    });
+    .then(response => response.json())
+    .catch(err => err);
 }
 
 export function catalogsCreate(payload) {
@@ -21,14 +18,15 @@ export function catalogsCreate(payload) {
   var request = new Request(url,  {
     headers: headers,
     method: 'POST',
-    body: JSON.stringify({ name: payload.name, type: payload.type }),
+    body: JSON.stringify({
+      name: payload.name,
+      type: payload.type,
+      sync_from_catalog: payload.sync_from_catalog_id,
+    }),
   });
   return fetch(request)
-    .then(response => {
-      return response.json();
-    }).catch(err => {
-      return err;
-    });
+    .then(response => response.json())
+    .catch(err => err);
 }
 
 export function catalogsVerifyDropbox(payload) {
@@ -40,11 +38,8 @@ export function catalogsVerifyDropbox(payload) {
     body: JSON.stringify({ id: payload.id, verifier: payload.verifier }),
   });
   return fetch(request)
-    .then(response => {
-      return response.json();
-    }).catch(err => {
-      return err;
-    });
+    .then(response => response.json())
+    .catch(err =>  err);
 }
 
 export function catalogsUpdate(payload) {
@@ -56,11 +51,8 @@ export function catalogsUpdate(payload) {
     body: JSON.stringify(payload),
   });
   return fetch(request)
-    .then(response => {
-      return response.json();
-    }).catch(err => {
-      return err;
-    });
+    .then(response => response.json())
+    .catch(err => err);
 }
 
 export function catalogsImport(catalogId) {
@@ -71,11 +63,8 @@ export function catalogsImport(catalogId) {
     method: 'GET',
   });
   return fetch(request)
-    .then(response => {
-      return response.json();
-    }).catch(err => {
-      return err;
-    });
+    .then(response => response.json())
+    .catch(err => err);
 }
 
 export function catalogsPhotos(id, page) {
@@ -87,8 +76,8 @@ export function catalogsPhotos(id, page) {
   });
   return fetch(request)
     .then(response => {
-      return { json: response.json(), pagination: response.headers };
-    }).catch(err => {
-      return err;
-    });
+      payload = { json: response.json(), pagination: response.headers };
+      return payload;
+    })
+    .catch(err => err);
 }

@@ -4,8 +4,8 @@ import { List, Map, fromJS } from 'immutable';
 var init = {
   catalogs: [],
   albums: [],
-  authUrl: null,
   catalog: { },
+  loading: false,
 };
 
 const initialState = Map(fromJS(init));
@@ -15,8 +15,7 @@ export default function reducer(state = initialState, action) {
 
     case stateTypes.LOAD_CATALOGS_FULFILLED: {
       state = state.set('catalogs', fromJS(action.payload.catalogs))
-      .set('catalog', Map())
-      .set('authUrl', null);
+      .set('catalog', Map());
       return state;
     }
 
@@ -25,21 +24,36 @@ export default function reducer(state = initialState, action) {
       return state;
     }
 
+    case stateTypes.CREATE_CATALOG_PENDING: {
+      state = state.set('loading', true);
+      return state;
+    }
+
     case stateTypes.CREATE_CATALOG_FULFILLED: {
-      state = state.set('catalog', fromJS(action.payload.catalog));
-      state = state.set('authUrl', fromJS(action.payload.auth_url));
+      state = state.set('catalog', fromJS(action.payload.catalog))
+              .set('loading', false);
       return state;
     }
 
     case stateTypes.UPDATE_CATALOG_FULFILLED: {
-      var catalog = state.getIn(['catalog']);
+
       state = state.mergeDeep(fromJS(action.payload));
       return state;
     }
 
+    case stateTypes.VERIFY_DROPBOX_PENDING: {
+      state = state.set('loading', true);
+      return state;
+    }
+
     case stateTypes.VERIFY_DROPBOX_FULFILLED: {
-      var catalog = state.getIn(['catalog']);
-      state = state.mergeDeep(fromJS(action.payload));
+      state = state.mergeDeep(fromJS(action.payload))
+              .set('loading', false);
+      return state;
+    }
+
+    case stateTypes.NEW_CATALOG: {
+      state = state.set('catalog', {});
       return state;
     }
 
