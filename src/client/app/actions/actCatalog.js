@@ -22,6 +22,9 @@ export function getCatalogs() {
 
 export function createCatalogs(payload) {
   return function (dispatch) {
+
+    dispatch({ type: stateTypes.CREATE_CATALOG_PENDING });
+
     return catalogsCreate(payload)
     .then(response => {
       dispatch({ type: 'CREATE_CATALOG_FULFILLED', payload: response });
@@ -34,9 +37,12 @@ export function createCatalogs(payload) {
 
 export function updateCatalog(payload) {
   return function (dispatch) {
+
+    dispatch({ type: stateTypes.UPDATE_CATALOG_PENDING });
+
     return catalogsUpdate(payload)
     .then(response => {
-      dispatch({ type: 'UPDATE_CATALOG_FULFILLED', payload: response });
+      dispatch({ type: stateTypes.UPDATE_CATALOG_FULFILLED, payload: response });
     })
     .catch(error => {
       throw(error);
@@ -44,15 +50,22 @@ export function updateCatalog(payload) {
   };
 }
 
+export function newCatalog() {
+  return {
+    type: stateTypes.NEW_CATALOG,
+  };
+}
+
 export function verifyDropboxCatalog(payload) {
   return function (dispatch) {
+
+    dispatch({ type: stateTypes.VERIFY_DROPBOX_PENDING });
+
     return catalogsVerifyDropbox(payload)
     .then(response => {
-      dispatch({ type: 'VERIFY_DROPBOX_FULFILLED', payload: response });
+      dispatch({ type: stateTypes.VERIFY_DROPBOX_FULFILLED, payload: response });
     })
-    .catch(error => {
-      throw(error);
-    });
+    .catch(error => { throw(error); });
   };
 }
 

@@ -1,9 +1,8 @@
 import React from 'react';
-import { getCatalogs, updateCatalog } from '../../actions/actCatalog'
 import '../../stylesheets/card'
 import NewCatalog from './new';
-import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+
 class NewCatalogDialog extends React.Component {
   constructor(props) {
     super(props);
@@ -24,13 +23,16 @@ class NewCatalogDialog extends React.Component {
     const user_id = !!next.catalog.getIn(['ext_store_data', 'user_id'], false)
     const catalogId = !!next.catalog.getIn(['sync_from_catalog'], false)
 
-    if (auth_url && stepIndex == 0) {
-      state = { stepIndex: 1, stepBack: false }
-    } else if (user_id && stepIndex == 1) {
+
+    if (stepIndex == 0 && catalogType) {
+      state = { stepIndex: 1, stepBack: true }
+    } else if (auth_url && stepIndex == 1) {
       state = { stepIndex: 2, stepBack: false }
-    } else if (catalogId && stepIndex == 2) {
-      state = { stepIndex: 3, stepBack: true }
-    } else if (stepIndex == 3) {
+    } else if (user_id && stepIndex == 2) {
+      state = { stepIndex: 3, stepBack: false }
+    } else if (catalogId && stepIndex == 3) {
+      state = { stepIndex: 4, stepBack: true }
+    } else if (stepIndex == 4) {
       state = { stepIndex: 0 }
     }
 
@@ -41,6 +43,11 @@ class NewCatalogDialog extends React.Component {
     var {stepIndex} = this.state;
     switch (stepIndex) {
       case 0: {
+
+        break;
+      }
+
+      case 1: {
         var payload = {
           name: this.refs.catalog.state.name,
           type: 'DropboxCatalog',
@@ -49,7 +56,7 @@ class NewCatalogDialog extends React.Component {
         break;
       }
 
-      case 1: {
+      case 2: {
         var payload = {
           id: this.props.catalog.get('id'),
           verifier: this.refs.catalog.state.verifier,
@@ -59,7 +66,7 @@ class NewCatalogDialog extends React.Component {
         break;
       }
 
-      case 2: {
+      case 3: {
         var payload = {
           id: this.props.catalog.get('id'),
           type: 'DropboxCatalog',
@@ -70,7 +77,7 @@ class NewCatalogDialog extends React.Component {
         break;
       }
 
-      case 3: {
+      case 4: {
         this.props.getCatalogs();
         this.props.onClose()
         this.setState({stepIndex: 0})
