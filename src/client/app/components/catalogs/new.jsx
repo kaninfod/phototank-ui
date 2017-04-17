@@ -9,7 +9,6 @@ import FlatButton from 'material-ui/FlatButton';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import Checkbox from 'material-ui/Checkbox';
 import Paper from 'material-ui/Paper';
 import { connect } from "react-redux";
 import {
@@ -19,6 +18,7 @@ import {
   updateCatalog,
   importCatalog,
   newCatalog,
+  getCatalog,
 } from '../../actions/actCatalog';
 
 @connect((store) => {
@@ -38,9 +38,9 @@ class NewCatalog extends React.Component {
     this.handleCatalogChange = this.handleCatalogChange.bind(this);
     this.state = {
       stepIndex: this.props.stepIndex,
-      catalog: null,
-      catalogType: 'DropboxCatalog',
-      name: '',
+      catalog: 1,
+      catalogType: 'FlickrCatalog',
+      name: 'lak',
       verifier: '',
     };
   }
@@ -113,14 +113,21 @@ class NewCatalog extends React.Component {
 
       case 3: {
         //verify
-        if (!this.state.verifier) { return }
-        var payload = {
-          id: this.props.catalog.get('id'),
-          verifier: this.state.verifier,
-          type: this.state.catalogType,
-        }
+        if (this.state.catalogType == 'DropboxCatalog') {
+          if (!this.state.verifier) { return }
+          var payload = {
+            id: this.props.catalog.get('id'),
+            verifier: this.state.verifier,
+            type: this.state.catalogType,
+          }
 
-        this.props.dispatch(verifyDropboxCatalog(payload))
+          this.props.dispatch(verifyDropboxCatalog(payload))
+        } else if (this.state.catalogType == 'FlickrCatalog') {
+          if (!this.props.catalog.get('verified', false)) {
+            this.props.dispatch(getCatalog({id: this.props.catalog.get('id')}))
+            return
+           }
+        }
         // this.props.newActions.verifyDropboxCatalog(payload)
         this.setState({
           stepIndex: stepIndex + 1,
@@ -190,27 +197,39 @@ class NewCatalog extends React.Component {
 
       case 3: {
         if (this.props.loading) { return }
-        return (
-          <div>
-            <p>
-              Goto <a target="_blank" href={this.props.catalog.getIn(['ext_store_data', 'auth_url'])}>Dropbox</a> to
-              authorize access to your Dropbox account.
-              Enter the verifier code below:
-            </p>
-            <TextField
-              key="1"
-              onChange={this.handleVerifier}
-              defaultValue={this.state.verifier}
-              floatingLabelText="Dropbox verifier code"
-             />
-         </div>
-        );
+        if (this.state.catalogType == 'DropboxCatalog') {
+          return (
+            <div>
+              <p>
+                Goto <a target="_blank" href={this.props.catalog.get('auth_url')}>Dropbox</a> to
+                authorize access to your Dropbox account.
+                Enter the verifier code below:
+              </p>
+              <TextField
+                key="1"
+                onChange={this.handleVerifier}
+                defaultValue={this.state.verifier}
+                floatingLabelText="Dropbox verifier code"
+               />
+           </div>
+          );
+        } else if (this.state.catalogType == 'FlickrCatalog') {
+          return(
+            <div>
+              <p>
+                Goto <a target="_blank" href={this.props.catalog.get('auth_url')}>Flickr</a> to
+                authorize access to your Flickr account.
+                Press 'Next' when done.
+              </p>
+            </div>
+          )
+        }
       }
 
       case 4: {
         if (this.props.loading) { return }
 
-        const verified = this.props.catalog.getIn(['ext_store_data', 'access_token'], false)
+        const verified = this.props.catalog.get('verified', false)
         if (!!verified) {
           return (
             <p>

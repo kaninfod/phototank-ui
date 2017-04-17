@@ -57,4 +57,4 @@ class Catalog extends React.Component {
   }
 }
 
-export default Catalog; 
+export default Catalog;

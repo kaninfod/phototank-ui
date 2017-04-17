@@ -4,6 +4,7 @@ import {
   catalogsCreate,
   catalogsVerifyDropbox,
   catalogsUpdate,
+  catalogsGet,
   catalogsImport
  } from '../api/apiCatalogs';
 import store from '../store';
@@ -13,6 +14,21 @@ export function getCatalogs() {
     return catalogs()
     .then(response => {
       dispatch({ type: 'LOAD_CATALOGS_FULFILLED', payload: response });
+    })
+    .catch(error => {
+      throw(error);
+    });
+  };
+}
+
+export function getCatalog(payload) {
+  return function (dispatch) {
+
+    dispatch({ type: stateTypes.GET_CATALOG_PENDING });
+
+    return catalogsGet(payload)
+    .then(response => {
+      dispatch({ type: stateTypes.GET_CATALOG_FULFILLED, payload: response });
     })
     .catch(error => {
       throw(error);
@@ -71,7 +87,7 @@ export function verifyDropboxCatalog(payload) {
 
 export function importCatalog(payload) {
   return function (dispatch) {
-    return catalogsImport(payload)
+    return catalogsImport(payload.id)
     .then(response => {
       dispatch({ type: 'IMPORT_CATALOG_FULFILLED', payload: response });
     })

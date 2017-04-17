@@ -2,12 +2,11 @@ import React from 'react';
 import { connect } from "react-redux";
 import Header from '../components/common/header';
 import {
+  newCatalog,
   getCatalogs,
   createCatalogs,
-  verifyDropboxCatalog,
-  updateCatalog,
   importCatalog,
-  newCatalog,
+  
 } from '../actions/actCatalog';
 import { loadAlbums } from '../actions/actBucket';
 import '../stylesheets/card';

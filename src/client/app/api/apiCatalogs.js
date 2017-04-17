@@ -30,12 +30,24 @@ export function catalogsCreate(payload) {
 }
 
 export function catalogsVerifyDropbox(payload) {
-  var url = '/api/catalogs/verify_dropbox';
+  const params = ''.concat('?id=', payload.id, '&oauth_verifier=', payload.verifier);
+  var url = '/api/catalogs/oauth_verify'.concat(params);
   headers.append('Content-Type', 'application/json');
   var request = new Request(url,  {
     headers: headers,
-    method: 'POST',
-    body: JSON.stringify({ id: payload.id, verifier: payload.verifier }),
+    method: 'GET',
+  });
+  return fetch(request)
+    .then(response => response.json())
+    .catch(err =>  err);
+}
+
+export function catalogsGet(payload) {
+  var url = '/api/catalogs/'.concat(payload.id, '.json');
+  headers.append('Content-Type', 'application/json');
+  var request = new Request(url,  {
+    headers: headers,
+    method: 'GET',
   });
   return fetch(request)
     .then(response => response.json())

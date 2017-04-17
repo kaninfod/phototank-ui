@@ -24,6 +24,18 @@ export default function reducer(state = initialState, action) {
       return state;
     }
 
+    case stateTypes.GET_CATALOG_PENDING: {
+      state = state.set('loading', true);
+      return state;
+    }
+
+    case stateTypes.GET_CATALOG_FULFILLED: {
+      console.log(action);
+      state = state.set('catalog', fromJS(action.payload.catalog))
+              .set('loading', false);
+      return state;
+    }
+
     case stateTypes.CREATE_CATALOG_PENDING: {
       state = state.set('loading', true);
       return state;
